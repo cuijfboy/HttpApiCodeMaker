@@ -1,22 +1,25 @@
 package name.ilab.http.code.generator.sample;
 
 
+import name.ilab.http.code.generator.HttpApiCodeMaker;
 import name.ilab.http.code.generator.annotation.HttpApiCode;
+
+import java.io.File;
 
 /**
  * Created by cuijfboy on 15/11/28.
  */
 
-@HttpApiCode(configFile = "./res/sample_api.json")
+//@HttpApiCode(configFile = "./res/sample_api.json")
 public class SampleMain {
 
-//    private static void generateHttpApiCode() {
-//        new HttpApiCodeMaker().generate(
-//                new File("./res/sample_api.json"));
-//
-//        System.out.println();
-//        System.out.println("Api code has been generated according to ./res/sample_api.json");
-//    }
+    private static void generateHttpApiCode() {
+        new HttpApiCodeMaker().generate(
+                new File("./res/sample_api.json"));
+
+        System.out.println();
+        System.out.println("Api code has been generated according to ./res/sample_api.json");
+    }
 
 //    private static void invokeHttpApiCode() {
 //        new LoginRequest3() {
@@ -40,7 +43,7 @@ public class SampleMain {
     public static void main(String[] args) {
         System.out.println("\n********** main start **********");
 
-//        generateHttpApiCode();
+        generateHttpApiCode();
 
 //        invokeHttpApiCode();
 

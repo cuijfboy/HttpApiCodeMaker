@@ -80,26 +80,23 @@ public class ${api.name} extends BaseRequest {
         public ${api.model[class][parameter]} ${parameter};
         </#list>
     }
+
     </#list>
     </#if>
-
     // ------------------------------------------
-
-    <#-- [CUSTOM] public Request ${api.name}; -->
 
     public ${api.name}() {
         this.header = new HashMap<>();
         this.hook = Utils.getHook(HOOK_NAME);
-    <#-- [CUSTOM] this.${api.name} = new Request(); -->
         this.request = new Request();
     }
 
     public ${api.name} go(IHttpClient httpClient) {
-        getRequestData().generateMethod();
-        getRequestData().generateUrl();
-        getRequestData().generateHeader();
-        getRequestData().generateBody();
-        hook.onRequest(API_NAME, method, url, header, body, getRequestData(), getRequestData().getClass());
+        request.generateMethod();
+        request.generateUrl();
+        request.generateHeader();
+        request.generateBody();
+        hook.onRequest(API_NAME, method, url, header, body, request, request.getClass());
         httpClient.request(this);
         return this;
     }
@@ -108,7 +105,7 @@ public class ${api.name} extends BaseRequest {
         return go(Utils.getMockHttpClient());
     }
 
-    private void generateResponseData(Map<String, String> header, String body) {
+    private void generateResponseDataObject(Map<String, String> header, String body) {
         try {
             response = Utils.getSerializeNullGson().fromJson(body, Response.class);
         } catch (Exception e) {
@@ -119,31 +116,22 @@ public class ${api.name} extends BaseRequest {
         <#list api.response.header?keys as parameter>
         response.${parameter} = header.get("${parameter}");
         </#list>
-        hook.onResponseData(API_NAME, response, response.getClass(), header, body);
+        hook.onResponseDataObject(API_NAME, response, response.getClass(), header, body);
     }
 
 // Fixed BEGIN ##################################
 
     public Request request;
-    private Response response;
-    private ResponseListener listener;
-    private final IApiHook hook;
-
-    public Request getRequestData() {
-        <#-- [CUSTOM] return ${api.name}; -->
-        return request;
-    }
-
-    public void setResponseListener(ResponseListener listener) {
-        this.listener = listener;
-    }
+    public Response response;
+    public ResponseListener responseListener;
+    public IApiHook hook;
 
     @Override
     public final void onResponse(int statusCode, Map<String, String> header, String body) {
         hook.onResponse(API_NAME, statusCode, header, body);
-        generateResponseData(header, body);
-        if (listener != null) {
-            listener.onResponse(statusCode, response, header, body);
+        generateResponseDataObject(header, body);
+        if (responseListener != null) {
+            responseListener.onResponse(statusCode, response, header, body);
         } else {
             if (!onResponse(statusCode, response)) {
                 onResponse(statusCode, response, header, body);
@@ -151,16 +139,18 @@ public class ${api.name} extends BaseRequest {
         }
     }
 
-    public boolean onResponse(int statusCode, Response data) {
+    public boolean onResponse(int statusCode, Response response) {
         return false;
     }
 
-    public boolean onResponse(int statusCode, Response data, Map<String, String> header, String body) {
+    public boolean onResponse(int statusCode, Response response,
+                              Map<String, String> header, String body) {
         return false;
     }
 
     public interface ResponseListener {
-        boolean onResponse(int statusCode, Response data, Map<String, String> header, String body);
+        boolean onResponse(int statusCode, Response response,
+                           Map<String, String> header, String body);
     }
 }
 

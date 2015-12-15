@@ -44,9 +44,7 @@ public class LoginRequest2 extends BaseRequest {
         public int errorCode;
     }
 
-
     // ------------------------------------------
-
 
     public LoginRequest2() {
         this.header = new HashMap<>();
@@ -55,11 +53,11 @@ public class LoginRequest2 extends BaseRequest {
     }
 
     public LoginRequest2 go(IHttpClient httpClient) {
-        getRequestData().generateMethod();
-        getRequestData().generateUrl();
-        getRequestData().generateHeader();
-        getRequestData().generateBody();
-        hook.onRequest(API_NAME, method, url, header, body, getRequestData(), getRequestData().getClass());
+        request.generateMethod();
+        request.generateUrl();
+        request.generateHeader();
+        request.generateBody();
+        hook.onRequest(API_NAME, method, url, header, body, request, request.getClass());
         httpClient.request(this);
         return this;
     }
@@ -68,7 +66,7 @@ public class LoginRequest2 extends BaseRequest {
         return go(Utils.getMockHttpClient());
     }
 
-    private void generateResponseData(Map<String, String> header, String body) {
+    private void generateResponseDataObject(Map<String, String> header, String body) {
         try {
             response = Utils.getSerializeNullGson().fromJson(body, Response.class);
         } catch (Exception e) {
@@ -77,30 +75,22 @@ public class LoginRequest2 extends BaseRequest {
         }
         response = response == null ? new Response() : response;
         response.session = header.get("session");
-        hook.onResponseData(API_NAME, response, response.getClass(), header, body);
+        hook.onResponseDataObject(API_NAME, response, response.getClass(), header, body);
     }
 
 // Fixed BEGIN ##################################
 
     public Request request;
-    private Response response;
-    private ResponseListener listener;
-    private final IApiHook hook;
-
-    public Request getRequestData() {
-        return request;
-    }
-
-    public void setResponseListener(ResponseListener listener) {
-        this.listener = listener;
-    }
+    public Response response;
+    public ResponseListener responseListener;
+    public IApiHook hook;
 
     @Override
     public final void onResponse(int statusCode, Map<String, String> header, String body) {
         hook.onResponse(API_NAME, statusCode, header, body);
-        generateResponseData(header, body);
-        if (listener != null) {
-            listener.onResponse(statusCode, response, header, body);
+        generateResponseDataObject(header, body);
+        if (responseListener != null) {
+            responseListener.onResponse(statusCode, response, header, body);
         } else {
             if (!onResponse(statusCode, response)) {
                 onResponse(statusCode, response, header, body);
@@ -108,16 +98,18 @@ public class LoginRequest2 extends BaseRequest {
         }
     }
 
-    public boolean onResponse(int statusCode, Response data) {
+    public boolean onResponse(int statusCode, Response response) {
         return false;
     }
 
-    public boolean onResponse(int statusCode, Response data, Map<String, String> header, String body) {
+    public boolean onResponse(int statusCode, Response response,
+                              Map<String, String> header, String body) {
         return false;
     }
 
     public interface ResponseListener {
-        boolean onResponse(int statusCode, Response data, Map<String, String> header, String body);
+        boolean onResponse(int statusCode, Response response,
+                           Map<String, String> header, String body);
     }
 }
 

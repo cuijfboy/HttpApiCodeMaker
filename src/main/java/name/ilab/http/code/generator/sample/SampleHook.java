@@ -30,12 +30,12 @@ public class SampleHook implements IApiHook {
     }
 
     @Override
-    public void onResponseData(String apiName, Object data, Class dataClass, Map<String, String> header, String body) {
+    public void onResponseDataObject(String apiName, Object data, Class dataClass, Map<String, String> header, String body) {
         System.out.println();
-        System.out.println("SampleHook onResponseData name = " + apiName);
-        System.out.println("SampleHook onResponseData data = " + data);
-        System.out.println("SampleHook onResponseData dataClass = " + dataClass);
-        System.out.println("SampleHook onResponseData header = " + header);
-        System.out.println("SampleHook onResponseData body = " + body);
+        System.out.println("SampleHook onResponseDataObject name = " + apiName);
+        System.out.println("SampleHook onResponseDataObject data = " + data);
+        System.out.println("SampleHook onResponseDataObject dataClass = " + dataClass);
+        System.out.println("SampleHook onResponseDataObject header = " + header);
+        System.out.println("SampleHook onResponseDataObject body = " + body);
     }
 }

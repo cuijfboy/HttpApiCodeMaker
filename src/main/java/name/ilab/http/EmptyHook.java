@@ -18,7 +18,7 @@ public class EmptyHook implements IApiHook {
     }
 
     @Override
-    public void onResponseData(String apiName, Object data, Class dataClass, Map<String, String> header, String body) {
+    public void onResponseDataObject(String apiName, Object data, Class dataClass, Map<String, String> header, String body) {
 
     }
 }
