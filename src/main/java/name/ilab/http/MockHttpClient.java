@@ -5,15 +5,15 @@ import java.util.HashMap;
 /**
  * Created by cuijfboy on 15/12/1.
  */
-public class DefaultHttpClient implements IHttpClient {
+public class MockHttpClient implements IHttpClient {
 
     @Override
     public void request(IHttpRequest request) {
         System.out.println();
-        System.out.println("DefaultHttpClient request.getMethod() = " + request.getMethod());
-        System.out.println("DefaultHttpClient request.getUrl() = " + request.getUrl());
-        System.out.println("DefaultHttpClient request.getHeader() = " + request.getHeader());
-        System.out.println("DefaultHttpClient request.getBody() = " + request.getBody());
+        System.out.println("MockHttpClient request.getMethod() = " + request.getMethod());
+        System.out.println("MockHttpClient request.getUrl() = " + request.getUrl());
+        System.out.println("MockHttpClient request.getHeader() = " + request.getHeader());
+        System.out.println("MockHttpClient request.getBody() = " + request.getBody());
 
         request.getMethod();
         request.getUrl();

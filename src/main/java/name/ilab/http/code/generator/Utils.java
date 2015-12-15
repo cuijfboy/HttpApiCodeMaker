@@ -2,10 +2,7 @@ package name.ilab.http.code.generator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import name.ilab.http.DefaultHttpClient;
-import name.ilab.http.EmptyHook;
-import name.ilab.http.IApiHook;
-import name.ilab.http.IHttpClient;
+import name.ilab.http.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,8 +17,8 @@ public class Utils {
 
     private static IHttpClient httpClient;
 
-    public static synchronized IHttpClient getDefaultHttpClient() {
-        return httpClient == null ? (httpClient = new DefaultHttpClient()) : httpClient;
+    public static synchronized IHttpClient getMockHttpClient() {
+        return httpClient == null ? (httpClient = new MockHttpClient()) : httpClient;
     }
 
     private static Gson defaultGson;

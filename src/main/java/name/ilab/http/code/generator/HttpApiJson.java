@@ -10,7 +10,9 @@ public class HttpApiJson {
     private Map<String, HttpApi> local;
 
     public void refresh() {
+        global.refresh();
         for (Map.Entry<String, HttpApi> entry : local.entrySet()) {
+            entry.getValue().refresh();
             entry.getValue().combine(entry.getKey(), global);
         }
     }

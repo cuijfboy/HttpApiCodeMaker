@@ -1,11 +1,7 @@
 package name.ilab.http.code.generator.sample;
 
 
-import name.ilab.http.code.generator.HttpApiCodeGenerator;
 import name.ilab.http.code.generator.annotation.HttpApiCode;
-
-import java.io.File;
-import java.util.Map;
 
 /**
  * Created by cuijfboy on 15/11/28.
@@ -15,7 +11,7 @@ import java.util.Map;
 public class SampleMain {
 
 //    private static void generateHttpApiCode() {
-//        new HttpApiCodeGenerator().generate(
+//        new HttpApiCodeMaker().generate(
 //                new File("./res/sample_api.json"));
 //
 //        System.out.println();

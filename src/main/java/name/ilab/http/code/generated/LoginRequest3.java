@@ -11,12 +11,14 @@ import java.util.Map;
 
 
 public class LoginRequest3 extends BaseRequest {
-    private final String API_NAME = "name.ilab.http.code.generated.LoginRequest3";
-    private final String HOOK_NAME = "name.ilab.http.code.generator.sample.SampleHook";
+    public static final String API_NAME =
+            "name.ilab.http.code.generated.LoginRequest3";
+    public static final String HOOK_NAME =
+            "name.ilab.http.code.generator.sample.SampleHook";
 
     public class Request {
-       public String userName;
-       public String userPassword;
+        public String userName;
+        public String userPassword;
 
         private void generateMethod() {
             method = HttpMethod.GET;
@@ -78,11 +80,16 @@ public class LoginRequest3 extends BaseRequest {
     }
 
     public LoginRequest3 go() {
-        return go(Utils.getDefaultHttpClient());
+        return go(Utils.getMockHttpClient());
     }
 
     private void generateResponseData(Map<String, String> header, String body) {
-        response = Utils.getGson().fromJson(body, Response.class);
+        try {
+            response = Utils.getSerializeNullGson().fromJson(body, Response.class);
+        } catch (Exception e) {
+            response = null;
+            e.printStackTrace();
+        }
         response = response == null ? new Response() : response;
         response.session = header.get("session");
         hook.onResponseData(API_NAME, response, response.getClass(), header, body);

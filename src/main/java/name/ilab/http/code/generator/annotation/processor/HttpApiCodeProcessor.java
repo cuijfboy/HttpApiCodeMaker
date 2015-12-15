@@ -1,6 +1,6 @@
 package name.ilab.http.code.generator.annotation.processor;
 
-import name.ilab.http.code.generator.HttpApiCodeGenerator;
+import name.ilab.http.code.generator.HttpApiCodeMaker;
 import name.ilab.http.code.generator.annotation.HttpApiCode;
 
 import javax.annotation.processing.*;
@@ -22,7 +22,7 @@ public class HttpApiCodeProcessor extends AbstractProcessor {
     final String TAG = "[" + HttpApiCodeProcessor.class.getSimpleName() + "]";
     Messager messager;
     List<String> configFilePathList;
-    HttpApiCodeGenerator generator;
+    HttpApiCodeMaker generator;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -39,7 +39,7 @@ public class HttpApiCodeProcessor extends AbstractProcessor {
                 if (configFilePath.trim().equals("")) {
                     continue;
                 }
-                generator = generator == null ? new HttpApiCodeGenerator() : generator;
+                generator = generator == null ? new HttpApiCodeMaker() : generator;
                 messager.printMessage(Diagnostic.Kind.NOTE, TAG + " Generating code file(s) for " + configFilePath);
                 generator.generate(new File(configFilePath));
                 messager.printMessage(Diagnostic.Kind.NOTE,
@@ -55,6 +55,8 @@ public class HttpApiCodeProcessor extends AbstractProcessor {
                     configFilePathList.add(configFilePath);
                     messager.printMessage(Diagnostic.Kind.NOTE,
                             TAG + " Found HttpApiCode with configFile : " + configFilePath);
+                    messager.printMessage(Diagnostic.Kind.NOTE,
+                            TAG + " Current Folder : " + (new File("").getAbsolutePath()));
                 }
             }
         }

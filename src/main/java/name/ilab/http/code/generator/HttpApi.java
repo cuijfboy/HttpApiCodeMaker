@@ -21,6 +21,13 @@ public class HttpApi {
     private String codeFileFolder;
     private Map<String, Map<String, String>> model;
 
+    public void refresh() {
+        request = request == null ? new HashMap<String, Map<String, String>>() : request;
+        response = response == null ? new HashMap<String, Map<String, String>>() : response;
+        importList = importList == null ? new ArrayList<String>() : importList;
+        model = model == null ? new HashMap<String, Map<String, String>>() : model;
+    }
+
     public void combine(String name, HttpApi api) {
         this.name = this.name == null ? name : this.name;
         this.method = this.method == null ? api.method : this.method;
@@ -33,7 +40,7 @@ public class HttpApi {
         combineParameterMap(this.response, api.response);
         this.packageName = this.packageName == null ? api.packageName : this.packageName;
         this.hookName = this.hookName == null ? api.hookName : this.hookName;
-        this.importList = this.importList == null ? api.importList : this.importList;
+        combineImportList(this.importList, api.importList);
         this.codeFileFolder = this.codeFileFolder == null ? api.codeFileFolder : this.codeFileFolder;
     }
 
@@ -89,6 +96,12 @@ public class HttpApi {
                 iterator.remove();
             }
         }
+    }
+
+    private void combineImportList(List<String> thisList, List<String> thatList) {
+        List<String> diffList = new ArrayList<>(thatList);
+        diffList.removeAll(thisList);
+        thisList.addAll(diffList);
     }
 
     public String getName() {

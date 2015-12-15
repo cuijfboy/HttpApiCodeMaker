@@ -14,16 +14,22 @@ import ${import};
 </#list>
 
 public class ${api.name} extends BaseRequest {
-    private final String API_NAME = "${api.packageName}.${api.name}";
-    private final String HOOK_NAME = <#if api.hookName??>"${api.hookName}"<#else>null</#if>;
+    public static final String API_NAME =
+            "${api.packageName}.${api.name}";
+    <#if api.hookName??>
+    public static final String HOOK_NAME =
+            "${api.hookName}";
+    <#else>
+    public static final String HOOK_NAME = null;
+    </#if>
 
     public class Request {
-       <#list api.request.header?keys as parameter>
-       public transient ${api.request.header[parameter]} ${parameter};
-       </#list>
-       <#list api.request.body?keys as parameter>
-       public ${api.request.body[parameter]} ${parameter};
-       </#list>
+        <#list api.request.header?keys as parameter>
+        public transient ${api.request.header[parameter]} ${parameter};
+        </#list>
+        <#list api.request.body?keys as parameter>
+        public ${api.request.body[parameter]} ${parameter};
+        </#list>
 
         private void generateMethod() {
             method = HttpMethod.${api.method};
@@ -102,11 +108,16 @@ public class ${api.name} extends BaseRequest {
     }
 
     public ${api.name} go() {
-        return go(Utils.getDefaultHttpClient());
+        return go(Utils.getMockHttpClient());
     }
 
     private void generateResponseData(Map<String, String> header, String body) {
-        response = Utils.getGson().fromJson(body, Response.class);
+        try {
+            response = Utils.getSerializeNullGson().fromJson(body, Response.class);
+        } catch (Exception e) {
+            response = null;
+            e.printStackTrace();
+        }
         response = response == null ? new Response() : response;
         <#list api.response.header?keys as parameter>
         response.${parameter} = header.get("${parameter}");
