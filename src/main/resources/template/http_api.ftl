@@ -85,16 +85,13 @@ public class ${api.name} extends BaseRequest {
 
     // ------------------------------------------
 
-    public Request ${api.name};
+    <#-- [CUSTOM] public Request ${api.name}; -->
 
     public ${api.name}() {
         this.header = new HashMap<>();
         this.hook = Utils.getHook(HOOK_NAME);
-        this.${api.name} = new Request();
-    }
-
-    public Request getRequestData() {
-        return ${api.name};
+    <#-- [CUSTOM] this.${api.name} = new Request(); -->
+        this.request = new Request();
     }
 
     public ${api.name} go(IHttpClient httpClient) {
@@ -127,9 +124,15 @@ public class ${api.name} extends BaseRequest {
 
 // Fixed BEGIN ##################################
 
+    public Request request;
     private Response response;
     private ResponseListener listener;
     private final IApiHook hook;
+
+    public Request getRequestData() {
+        <#-- [CUSTOM] return ${api.name}; -->
+        return request;
+    }
 
     public void setResponseListener(ResponseListener listener) {
         this.listener = listener;

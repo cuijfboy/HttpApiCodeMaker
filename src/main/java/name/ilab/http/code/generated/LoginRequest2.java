@@ -47,16 +47,11 @@ public class LoginRequest2 extends BaseRequest {
 
     // ------------------------------------------
 
-    public Request LoginRequest2;
 
     public LoginRequest2() {
         this.header = new HashMap<>();
         this.hook = Utils.getHook(HOOK_NAME);
-        this.LoginRequest2 = new Request();
-    }
-
-    public Request getRequestData() {
-        return LoginRequest2;
+        this.request = new Request();
     }
 
     public LoginRequest2 go(IHttpClient httpClient) {
@@ -87,9 +82,14 @@ public class LoginRequest2 extends BaseRequest {
 
 // Fixed BEGIN ##################################
 
+    public Request request;
     private Response response;
     private ResponseListener listener;
     private final IApiHook hook;
+
+    public Request getRequestData() {
+        return request;
+    }
 
     public void setResponseListener(ResponseListener listener) {
         this.listener = listener;

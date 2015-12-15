@@ -57,16 +57,11 @@ public class LoginRequest3 extends BaseRequest {
 
     // ------------------------------------------
 
-    public Request LoginRequest3;
 
     public LoginRequest3() {
         this.header = new HashMap<>();
         this.hook = Utils.getHook(HOOK_NAME);
-        this.LoginRequest3 = new Request();
-    }
-
-    public Request getRequestData() {
-        return LoginRequest3;
+        this.request = new Request();
     }
 
     public LoginRequest3 go(IHttpClient httpClient) {
@@ -97,9 +92,14 @@ public class LoginRequest3 extends BaseRequest {
 
 // Fixed BEGIN ##################################
 
+    public Request request;
     private Response response;
     private ResponseListener listener;
     private final IApiHook hook;
+
+    public Request getRequestData() {
+        return request;
+    }
 
     public void setResponseListener(ResponseListener listener) {
         this.listener = listener;
