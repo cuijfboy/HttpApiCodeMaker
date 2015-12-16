@@ -1,4 +1,4 @@
-package name.ilab.http.code.generator;
+package name.ilab.http.code.maker;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package name.ilab.http.code.generator.annotation;
+package name.ilab.http.code.maker.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

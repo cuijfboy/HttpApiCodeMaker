@@ -1,4 +1,4 @@
-package name.ilab.http.code.generator;
+package name.ilab.http.code.maker;
 
 /**
  * Created by cuijfboy on 15/11/28.

@@ -1,8 +1,7 @@
-package name.ilab.http.code.generator.sample;
+package name.ilab.http.code.maker.sample;
 
 
-import name.ilab.http.code.generator.HttpApiCodeMaker;
-import name.ilab.http.code.generator.annotation.HttpApiCode;
+import name.ilab.http.code.maker.HttpApiCodeMaker;
 
 import java.io.File;
 
@@ -10,7 +9,7 @@ import java.io.File;
  * Created by cuijfboy on 15/11/28.
  */
 
-@HttpApiCode(configFile = "./res/sample_api.json")
+//@HttpApiCode(configFile = "./res/sample_api.json")
 public class SampleMain {
 
     private static void generateHttpApiCode() {

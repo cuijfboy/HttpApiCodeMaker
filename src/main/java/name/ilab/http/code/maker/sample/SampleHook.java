@@ -1,4 +1,4 @@
-package name.ilab.http.code.generator.sample;
+package name.ilab.http.code.maker.sample;
 
 import name.ilab.http.IApiHook;
 import name.ilab.http.HttpMethod;

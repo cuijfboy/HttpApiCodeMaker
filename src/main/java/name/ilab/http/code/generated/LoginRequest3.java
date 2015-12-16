@@ -4,7 +4,7 @@ import name.ilab.http.IApiHook;
 import name.ilab.http.IHttpClient;
 import name.ilab.http.code.template.BaseRequest;
 import name.ilab.http.HttpMethod;
-import name.ilab.http.code.generator.Utils;
+import name.ilab.http.code.maker.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

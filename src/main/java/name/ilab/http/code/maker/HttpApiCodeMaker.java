@@ -1,4 +1,4 @@
-package name.ilab.http.code.generator;
+package name.ilab.http.code.maker;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

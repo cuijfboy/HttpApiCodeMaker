@@ -1,7 +1,7 @@
-package name.ilab.http.code.generator.annotation.processor;
+package name.ilab.http.code.maker.annotation.processor;
 
-import name.ilab.http.code.generator.HttpApiCodeMaker;
-import name.ilab.http.code.generator.annotation.HttpApiCode;
+import name.ilab.http.code.maker.HttpApiCodeMaker;
+import name.ilab.http.code.maker.annotation.HttpApiCode;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Created by cuijfboy on 15/11/28.
  */
-@SupportedAnnotationTypes({"name.ilab.http.code.generator.annotation.HttpApiCode"})
+@SupportedAnnotationTypes({"name.ilab.http.code.maker.annotation.HttpApiCode"})
 public class HttpApiCodeProcessor extends AbstractProcessor {
 
     final String TAG = "[" + HttpApiCodeProcessor.class.getSimpleName() + "]";
