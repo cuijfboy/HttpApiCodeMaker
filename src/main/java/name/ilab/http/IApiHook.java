@@ -11,6 +11,6 @@ public interface IApiHook {
 
     void onResponse(String apiName, int statusCode, Map<String, String> header, String body);
 
-    void onResponseData(String apiName, Object data, Class dataClass, Map<String, String> header, String body);
+    void onResponseDataObject(String apiName, Object data, Class dataClass, Map<String, String> header, String body);
 
 }
