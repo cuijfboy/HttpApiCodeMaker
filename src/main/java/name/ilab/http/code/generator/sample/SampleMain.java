@@ -10,7 +10,7 @@ import java.io.File;
  * Created by cuijfboy on 15/11/28.
  */
 
-//@HttpApiCode(configFile = "./res/sample_api.json")
+@HttpApiCode(configFile = "./res/sample_api.json")
 public class SampleMain {
 
     private static void generateHttpApiCode() {
@@ -43,7 +43,7 @@ public class SampleMain {
     public static void main(String[] args) {
         System.out.println("\n********** main start **********");
 
-        generateHttpApiCode();
+//        generateHttpApiCode();
 
 //        invokeHttpApiCode();
 
