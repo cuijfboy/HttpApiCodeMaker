@@ -2,6 +2,30 @@
 
 ---
 
+**Maven**
+
+```xml
+<dependency>
+  <groupId>name.ilab</groupId>
+  <artifactId>http-api-code-maker</artifactId>
+  <version>0.1.0</version>
+  <groupId>org.freemarker</groupId>
+  <artifactId>freemarker</artifactId>
+  <version>2.3.23</version>
+</dependency>
+```
+
+**Gradle**
+
+```Gradle
+dependencies {
+    compile 'name.ilab:http-api-code-maker:0.1.0'
+    compile 'org.freemarker:freemarker:2.3.23'
+}
+```
+
+---
+
 需求文档里这样的表格：
 
 接口名称      | 登录
