@@ -1,7 +1,5 @@
 package name.ilab.http;
 
-import java.util.HashMap;
-
 /**
  * Created by cuijfboy on 15/12/1.
  */
@@ -14,20 +12,10 @@ public class MockHttpClient implements IHttpClient {
         System.out.println("MockHttpClient request.getUrl() = " + request.getUrl());
         System.out.println("MockHttpClient request.getHeader() = " + request.getHeader());
         System.out.println("MockHttpClient request.getBody() = " + request.getBody());
+        System.out.println("MockHttpClient response.statusCode = " + 200);
+        System.out.println("MockHttpClient response.header = " + null);
+        System.out.println("MockHttpClient response.body = " + null);
 
-        request.getMethod();
-        request.getUrl();
-        request.getHeader();
-        request.getBody();
-
-        request.onResponse(200,
-                new HashMap<String, String>() {
-                    {
-                        put("session", "9876543210");
-                    }
-                }, "{\"userId\":\"123\"," +
-                        "\"nickName\":\"administrator\"," +
-                        "\"errorCode\":\"0\"," +
-                        "\"errorInfo\":\"Everything goes well.\"}");
+        request.onResponse(200, null, null);
     }
 }

@@ -1,10 +1,13 @@
 package name.ilab.http.code.generated;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import name.ilab.http.IApiHook;
 import name.ilab.http.IHttpClient;
 import name.ilab.http.code.template.BaseRequest;
 import name.ilab.http.HttpMethod;
 import name.ilab.http.code.maker.Utils;
+import name.ilab.http.code.template.BaseResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +17,7 @@ public class LoginRequest2 extends BaseRequest {
     public static final String API_NAME =
             "name.ilab.http.code.generated.LoginRequest2";
     public static final String HOOK_NAME =
-            "name.ilab.http.code.generator.sample.SampleHook";
+            "name.ilab.http.code.maker.sample.SampleHook";
 
     public class Request {
         public String userName;
@@ -33,11 +36,11 @@ public class LoginRequest2 extends BaseRequest {
         }
 
         private void generateBody() {
-            body = Utils.getGson().toJson(this);
+            body = new Gson().toJson(this);
         }
     }
 
-    public class Response {
+    public class Response extends BaseResponse {
         public transient String session;
         public String userId;
         public String nickName;
@@ -53,11 +56,12 @@ public class LoginRequest2 extends BaseRequest {
     }
 
     public LoginRequest2 go(IHttpClient httpClient) {
+        hook.onRequestData(API_NAME, request, request.getClass());
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
         request.generateBody();
-        hook.onRequest(API_NAME, method, url, header, body, request, request.getClass());
+        hook.onRequest(API_NAME, this, request, request.getClass());
         httpClient.request(this);
         return this;
     }
@@ -66,19 +70,18 @@ public class LoginRequest2 extends BaseRequest {
         return go(Utils.getMockHttpClient());
     }
 
-    private void generateResponseDataObject(Map<String, String> header, String body) {
+    private void generateResponseData(Map<String, String> header, String body) {
         try {
-            response = Utils.getSerializeNullGson().fromJson(body, Response.class);
+            response = new GsonBuilder().serializeNulls().create().fromJson(body, Response.class);
         } catch (Exception e) {
             response = null;
             e.printStackTrace();
         }
         response = response == null ? new Response() : response;
         response.session = header.get("session");
-        hook.onResponseDataObject(API_NAME, response, response.getClass(), header, body);
     }
 
-// Fixed BEGIN ##################################
+// ############################################################
 
     public Request request;
     public Response response;
@@ -87,8 +90,11 @@ public class LoginRequest2 extends BaseRequest {
 
     @Override
     public final void onResponse(int statusCode, Map<String, String> header, String body) {
-        hook.onResponse(API_NAME, statusCode, header, body);
-        generateResponseDataObject(header, body);
+        BaseResponse baseResponse = new BaseResponse(statusCode, method, url, header, body);
+        hook.onResponse(API_NAME, baseResponse);
+        generateResponseData(header, body);
+        response.set(baseResponse);
+        hook.onResponseData(API_NAME, response, response.getClass());
         if (responseListener != null) {
             responseListener.onResponse(statusCode, response, header, body);
         } else {
@@ -112,5 +118,3 @@ public class LoginRequest2 extends BaseRequest {
                            Map<String, String> header, String body);
     }
 }
-
-// Fixed END ####################################

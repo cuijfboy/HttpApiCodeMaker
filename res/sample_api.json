@@ -21,8 +21,7 @@
       }
     },
     "packageName": "name.ilab.http.code.generated",
-    "hookName": "name.ilab.http.code.generator.sample.SampleHook",
-    "importList": [],
+    "hookName": "name.ilab.http.code.maker.sample.SampleHook",
     "codeFileFolder": "./src/main/java/name/ilab/http/code/generated/",
     "model": {
       "Session": {

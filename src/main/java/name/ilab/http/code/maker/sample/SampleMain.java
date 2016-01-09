@@ -1,7 +1,8 @@
 package name.ilab.http.code.maker.sample;
 
-
+import name.ilab.http.code.generated.LoginRequest;
 import name.ilab.http.code.maker.HttpApiCodeMaker;
+import name.ilab.http.code.maker.annotation.HttpApiCode;
 
 import java.io.File;
 
@@ -9,7 +10,7 @@ import java.io.File;
  * Created by cuijfboy on 15/11/28.
  */
 
-//@HttpApiCode(configFile = "./res/sample_api.json")
+@HttpApiCode(configFile = "./res/sample_api.json")
 public class SampleMain {
 
     private static void generateHttpApiCode() {
@@ -20,31 +21,31 @@ public class SampleMain {
         System.out.println("Api code has been generated according to ./res/sample_api.json");
     }
 
-//    private static void invokeHttpApiCode() {
-//        new LoginRequest3() {
-//            {
-//                LoginRequest3.userName = "admin@example.com";
-//                LoginRequest3.userPassword = "passw0rd";
-//            }
-//
-//            @Override
-//            public boolean onResponse(int statusCode, Response data) {
-//                System.out.println();
-//                System.out.println("onResponse data.errorCode = " + data.errorCode);
-//                System.out.println("onResponse data.userId = " + data.userId);
-//                System.out.println("onResponse data.nickName = " + data.nickName);
-//                System.out.println("onResponse data.session = " + data.session);
-//                return true;
-//            }
-//        }.go();
-//    }
+    private static void invokeHttpApiCode() {
+        new LoginRequest() {
+            {
+                request.userName = "admin@example.com";
+                request.userPassword = "passw0rd";
+            }
+
+            @Override
+            public boolean onResponse(int statusCode, Response data) {
+                System.out.println();
+                System.out.println("onResponse data.errorCode = " + data.errorCode);
+                System.out.println("onResponse data.userId = " + data.userId);
+                System.out.println("onResponse data.nickName = " + data.nickName);
+                System.out.println("onResponse data.session = " + data.session);
+                return true;
+            }
+        }.go(new SampleHttpClient());
+    }
 
     public static void main(String[] args) {
         System.out.println("\n********** main start **********");
 
 //        generateHttpApiCode();
 
-//        invokeHttpApiCode();
+        invokeHttpApiCode();
 
         System.out.println("\n********** main finish **********");
     }

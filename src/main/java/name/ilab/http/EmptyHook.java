@@ -1,5 +1,8 @@
 package name.ilab.http;
 
+import name.ilab.http.code.template.BaseRequest;
+import name.ilab.http.code.template.BaseResponse;
+
 import java.util.Map;
 
 /**
@@ -8,17 +11,22 @@ import java.util.Map;
 public class EmptyHook implements IApiHook {
 
     @Override
-    public void onRequest(String apiName, HttpMethod method, String url, Map<String, String> header, String body, Object data, Class dataClass) {
+    public void onRequestData(String apiName, Object data, Class dataClass) {
 
     }
 
     @Override
-    public void onResponse(String apiName, int statusCode, Map<String, String> header, String body) {
+    public void onRequest(String apiName, BaseRequest request, Object data, Class dataClass) {
 
     }
 
     @Override
-    public void onResponseDataObject(String apiName, Object data, Class dataClass, Map<String, String> header, String body) {
+    public void onResponse(String apiName, BaseResponse response) {
+
+    }
+
+    @Override
+    public void onResponseData(String apiName, BaseResponse data, Class dataClass) {
 
     }
 }

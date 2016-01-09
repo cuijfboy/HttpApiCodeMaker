@@ -1,5 +1,6 @@
 package name.ilab.http.code.maker;
 
+import com.google.gson.GsonBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -54,7 +55,7 @@ public class HttpApiCodeMaker {
     private void loadApiInfo(String apiJsonInfo) {
         System.out.println();
         System.out.println("[HttpApiCodeMaker] loading API config ...");
-        apiJson = Utils.getSerializeNullGson().fromJson(apiJsonInfo, HttpApiJson.class);
+        apiJson = new GsonBuilder().serializeNulls().create().fromJson(apiJsonInfo, HttpApiJson.class);
         apiJson.refresh();
         System.out.println();
         System.out.println("[HttpApiCodeMaker] global config loaded :\n " + apiJson.getGlobalConfig());

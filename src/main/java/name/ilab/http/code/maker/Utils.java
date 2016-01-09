@@ -21,18 +21,6 @@ public class Utils {
         return httpClient == null ? (httpClient = new MockHttpClient()) : httpClient;
     }
 
-    private static Gson defaultGson;
-    private static Gson serializeNullGson;
-
-    public static synchronized Gson getGson() {
-        return defaultGson == null ? (defaultGson = new Gson()) : defaultGson;
-    }
-
-    public static synchronized Gson getSerializeNullGson() {
-        return serializeNullGson == null ?
-                (serializeNullGson = new GsonBuilder().serializeNulls().create()) : serializeNullGson;
-    }
-
     private static Map<String, IApiHook> hookMap = new HashMap<>();
     private static List<String> badHookList = new ArrayList<>();
     private static final EmptyHook EMPTY_HOOK = new EmptyHook();
