@@ -1,16 +1,15 @@
 package name.ilab.http.code.maker.sample;
 
-import name.ilab.http.IApiHook;
+import name.ilab.http.EmptyHook;
 import name.ilab.http.HttpMethod;
+import name.ilab.http.ResponseType;
 import name.ilab.http.code.template.BaseRequest;
 import name.ilab.http.code.template.BaseResponse;
-
-import java.util.Map;
 
 /**
  * Created by cuijfboy on 15/11/28.
  */
-public class SampleHook implements IApiHook {
+public class SampleHook extends EmptyHook {
     @Override
     public void onRequestData(String apiName, Object data, Class dataClass) {
         System.out.println();
@@ -45,7 +44,7 @@ public class SampleHook implements IApiHook {
     }
 
     @Override
-    public void onResponse(String apiName, BaseResponse response) {
+    public void onResponse(String apiName, ResponseType type, BaseResponse response) {
         System.out.println();
         System.out.println("SampleHook onResponse name = " + apiName);
         System.out.println("SampleHook onResponse method = " + response.getMethod());
@@ -56,10 +55,11 @@ public class SampleHook implements IApiHook {
     }
 
     @Override
-    public void onResponseData(String apiName, BaseResponse data, Class dataClass) {
+    public void onResponseData(String apiName, ResponseType type, BaseResponse data, Class dataClass) {
         System.out.println();
         System.out.println("SampleHook onResponseData data = " + data);
         System.out.println("SampleHook onResponseData dataClass = " + dataClass);
     }
+
 
 }

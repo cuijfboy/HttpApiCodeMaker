@@ -1,8 +1,9 @@
 package name.ilab.http.code.maker;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import name.ilab.http.*;
+import name.ilab.http.EmptyHook;
+import name.ilab.http.IApiHook;
+import name.ilab.http.IHttpClient;
+import name.ilab.http.MockHttpClient;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,10 +16,10 @@ import java.util.Map;
  */
 public class Utils {
 
-    private static IHttpClient httpClient;
+    private static IHttpClient mockHttpClient;
 
     public static synchronized IHttpClient getMockHttpClient() {
-        return httpClient == null ? (httpClient = new MockHttpClient()) : httpClient;
+        return mockHttpClient == null ? (mockHttpClient = new MockHttpClient()) : mockHttpClient;
     }
 
     private static Map<String, IApiHook> hookMap = new HashMap<>();
@@ -44,19 +45,30 @@ public class Utils {
     }
 
     public static String loadStringFromFile(File file) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = null;
         try {
-            InputStream is = new FileInputStream(file);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
             }
-            br.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            closeQuietly(bufferedReader);
         }
-        return sb.toString();
+        return stringBuilder.toString();
+    }
+
+    public static void closeQuietly(Closeable closeable) {
+        try {
+            if (closeable != null) {
+                closeable.close();
+            }
+        } catch (IOException e) {
+            // Empty
+        }
     }
 
 }

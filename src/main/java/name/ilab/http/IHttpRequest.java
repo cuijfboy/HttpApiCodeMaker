@@ -1,5 +1,6 @@
 package name.ilab.http;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -11,10 +12,15 @@ public interface IHttpRequest {
 
     String getUrl();
 
-    Map<String,String> getHeader();
+    Map<String, String> getHeader();
 
     String getBody();
 
-    void onResponse(int statusCode, Map<String,String> header, String body);
+    ResponseType getResponseType();
 
+    void onResponse(int statusCode, Map<String, String> header, String body);
+
+    void onResponse(int statusCode, Map<String, String> header, File file);
+
+    void onResponse(int statusCode, Map<String, String> header, byte[] data);
 }

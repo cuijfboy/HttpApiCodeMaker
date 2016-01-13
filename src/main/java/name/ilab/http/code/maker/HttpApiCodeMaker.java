@@ -13,9 +13,9 @@ import java.util.Map;
  * Created by cuijfboy on 15/11/28.
  */
 public class HttpApiCodeMaker {
-    private final String TEMPLATE_FOLDER = "/template";
-    private final String HTTP_API_TEMPLATE_NAME = "http_api.ftl";
-    private final String HTTP_API_GLOBAL_MODEL_TEMPLATE_NAME = "http_api_global_model.ftl";
+    public static final String TEMPLATE_FOLDER = "/template";
+    public static final String HTTP_API_TEMPLATE_NAME = "http_api.ftl";
+    public static final String HTTP_API_GLOBAL_MODEL_TEMPLATE_NAME = "http_api_global_model.ftl";
 
     private HttpApiJson apiJson;
     private Template httpApiTemplate;

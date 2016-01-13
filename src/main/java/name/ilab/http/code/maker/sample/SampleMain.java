@@ -1,6 +1,5 @@
 package name.ilab.http.code.maker.sample;
 
-import name.ilab.http.code.generated.LoginRequest;
 import name.ilab.http.code.maker.HttpApiCodeMaker;
 import name.ilab.http.code.maker.annotation.HttpApiCode;
 
@@ -22,22 +21,22 @@ public class SampleMain {
     }
 
     private static void invokeHttpApiCode() {
-        new LoginRequest() {
-            {
-                request.userName = "admin@example.com";
-                request.userPassword = "passw0rd";
-            }
-
-            @Override
-            public boolean onResponse(int statusCode, Response data) {
-                System.out.println();
-                System.out.println("onResponse data.errorCode = " + data.errorCode);
-                System.out.println("onResponse data.userId = " + data.userId);
-                System.out.println("onResponse data.nickName = " + data.nickName);
-                System.out.println("onResponse data.session = " + data.session);
-                return true;
-            }
-        }.go(new SampleHttpClient());
+//        new LoginRequest() {
+//            {
+//                request.userName = "admin@example.com";
+//                request.userPassword = "passw0rd";
+//            }
+//
+//            @Override
+//            public boolean onResponse(int statusCode, Response data) {
+//                System.out.println();
+//                System.out.println("onResponse data.errorCode = " + data.errorCode);
+//                System.out.println("onResponse data.userId = " + data.userId);
+//                System.out.println("onResponse data.nickName = " + data.nickName);
+//                System.out.println("onResponse data.session = " + data.session);
+//                return true;
+//            }
+//        }.go(new SampleHttpClient());
     }
 
     public static void main(String[] args) {
@@ -45,7 +44,7 @@ public class SampleMain {
 
 //        generateHttpApiCode();
 
-        invokeHttpApiCode();
+//        invokeHttpApiCode();
 
         System.out.println("\n********** main finish **********");
     }

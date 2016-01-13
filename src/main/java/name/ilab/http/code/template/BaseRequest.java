@@ -1,7 +1,8 @@
 package name.ilab.http.code.template;
 
-import name.ilab.http.IHttpRequest;
 import name.ilab.http.HttpMethod;
+import name.ilab.http.IHttpRequest;
+import name.ilab.http.ResponseType;
 
 import java.util.Map;
 
@@ -13,6 +14,7 @@ public abstract class BaseRequest implements IHttpRequest {
     protected String url;
     protected Map<String, String> header;
     protected String body;
+    protected ResponseType responseType;
 
     @Override
     public HttpMethod getMethod() {
@@ -34,6 +36,11 @@ public abstract class BaseRequest implements IHttpRequest {
         return body;
     }
 
+    @Override
+    public ResponseType getResponseType() {
+        return responseType;
+    }
+
     public void setMethod(HttpMethod method) {
         this.method = method;
     }
@@ -49,4 +56,9 @@ public abstract class BaseRequest implements IHttpRequest {
     public void setBody(String body) {
         this.body = body;
     }
+
+    public void setResponseType(ResponseType responseType) {
+        this.responseType = responseType;
+    }
+
 }

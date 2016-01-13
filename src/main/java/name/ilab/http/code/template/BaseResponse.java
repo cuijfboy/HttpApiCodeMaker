@@ -18,20 +18,19 @@ public class BaseResponse {
 
     }
 
-    public BaseResponse(int statusCode, HttpMethod method, String url, Map<String, String> header, String body) {
+    public BaseResponse(int statusCode, HttpMethod method, String url, Map<String, String> header) {
         this.statusCode = statusCode;
         this.method = method;
         this.url = url;
         this.header = header;
-        this.body = body;
     }
 
     public void set(BaseResponse response) {
-        statusCode = statusCode;
-        method = method;
-        url = url;
-        header = header;
-        body = body;
+        this.statusCode = response.statusCode;
+        this.method = response.method;
+        this.url = response.url;
+        this.header = response.header;
+        this.body = response.body;
     }
 
     public int getStatusCode() {

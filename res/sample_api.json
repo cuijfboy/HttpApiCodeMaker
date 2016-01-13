@@ -72,9 +72,9 @@
       },
       "response": {
         "body": {
-          "userId": "String",
-          "nickName": "String",
-          "errorInfo": null
+          "errorCode": null,
+          "errorInfo": null,
+          "myFile": "File"
         }
       }
     },
@@ -92,9 +92,9 @@
       },
       "response": {
         "body": {
-          "userId": "String",
-          "nickName": "String",
-          "errorInfo": null
+          "errorCode": null,
+          "errorInfo": null,
+          "myData": "byte[]"
         }
       }
     }

@@ -1,6 +1,7 @@
 package name.ilab.http.code.maker;
 
 import name.ilab.http.HttpMethod;
+import name.ilab.http.ResponseType;
 
 import java.util.*;
 
@@ -13,22 +14,23 @@ public class HttpApi {
     private String fullUrl;
     private String url;
     private String urlBase;
-    private Map<String, Map<String, String>> request;
-    private Map<String, Map<String, String>> response;
+    private Map<String, Map<String, String>> request; // Map< "head" or "body", Map< fieldName, fieldClassName >>
+    private Map<String, Map<String, String>> response; // Map< "head" or "body", < fieldName, fieldClassName >>
     private String packageName;
     private String hookName;
     private List<String> importList;
     private String codeFileFolder;
-    private Map<String, Map<String, String>> model;
+    private Map<String, Map<String, String>> model; // Map< className, Map< fieldName, fieldClassName >>
+    private ResponseType responseType;
 
-    public void refresh() {
+    public void prepare() {
         request = request == null ? new HashMap<String, Map<String, String>>() : request;
         response = response == null ? new HashMap<String, Map<String, String>>() : response;
         importList = importList == null ? new ArrayList<String>() : importList;
         model = model == null ? new HashMap<String, Map<String, String>>() : model;
     }
 
-    public void combine(String name, HttpApi api) {
+    public void merge(String name, HttpApi api) {
         this.name = this.name == null ? name : this.name;
         this.method = this.method == null ? api.method : this.method;
         if (this.fullUrl == null) {
@@ -36,21 +38,36 @@ public class HttpApi {
             this.url = this.url == null ? api.url : this.url;
             this.fullUrl = this.urlBase + this.url;
         }
-        combineParameterMap(this.request, api.request);
-        combineParameterMap(this.response, api.response);
+        mergeParameterMap(this.request, api.request);
+        mergeParameterMap(this.response, api.response);
         this.packageName = this.packageName == null ? api.packageName : this.packageName;
         this.hookName = this.hookName == null ? api.hookName : this.hookName;
-        combineImportList(this.importList, api.importList);
+        mergeImportList(this.importList, api.importList);
         this.codeFileFolder = this.codeFileFolder == null ? api.codeFileFolder : this.codeFileFolder;
     }
 
-    private void combineParameterMap(Map<String, Map<String, String>> thisMap,
-                                     Map<String, Map<String, String>> thatMap) {
-        combineParameterSubMap(getNotNullValueFromMap(thisMap, "header"), thatMap.get("header"));
-        combineParameterSubMap(getNotNullValueFromMap(thisMap, "body"), thatMap.get("body"));
+    public void refresh() {
+        responseType = ResponseType.TEXT;
+        Map<String, String> bodyMap = response.get("body");
+        if (bodyMap == null || bodyMap.size() != 1) {
+            return;
+        }
+        String fieldClassName = bodyMap.values().iterator().next().trim();
+        if ("File".equals(fieldClassName)) {
+            responseType = ResponseType.FILE;
+        } else if ("byte[]".equals(fieldClassName)) {
+            responseType = ResponseType.BINARY;
+        }
+
     }
 
-    private Map<String, String> getNotNullValueFromMap(Map<String, Map<String, String>> map, String key) {
+    private void mergeParameterMap(Map<String, Map<String, String>> thisMap,
+                                   Map<String, Map<String, String>> thatMap) {
+        mergeParameterSubMap(getMapFromMap(thisMap, "header"), thatMap.get("header"));
+        mergeParameterSubMap(getMapFromMap(thisMap, "body"), thatMap.get("body"));
+    }
+
+    private Map<String, String> getMapFromMap(Map<String, Map<String, String>> map, String key) {
         Map<String, String> value = map.get(key);
         if (value == null) {
             value = new HashMap<>();
@@ -59,8 +76,8 @@ public class HttpApi {
         return value;
     }
 
-    private void combineParameterSubMap(Map<String, String> thisMap,
-                                        Map<String, String> thatMap) {
+    private void mergeParameterSubMap(Map<String, String> thisMap,
+                                      Map<String, String> thatMap) {
         if (thisMap == null) {
             thisMap = new HashMap<>();
             if (thatMap == null) {
@@ -98,7 +115,7 @@ public class HttpApi {
         }
     }
 
-    private void combineImportList(List<String> thisList, List<String> thatList) {
+    private void mergeImportList(List<String> thisList, List<String> thatList) {
         List<String> diffList = new ArrayList<>(thatList);
         diffList.removeAll(thisList);
         thisList.addAll(diffList);
@@ -152,6 +169,10 @@ public class HttpApi {
         return model;
     }
 
+    public ResponseType getResponseType() {
+        return responseType;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -200,6 +221,10 @@ public class HttpApi {
         this.model = model;
     }
 
+    public void setResponseType(ResponseType responseType) {
+        this.responseType = responseType;
+    }
+
     @Override
     public String toString() {
         return "HttpApi{" +
@@ -215,6 +240,7 @@ public class HttpApi {
                 ", importList=" + importList +
                 ", codeFileFolder='" + codeFileFolder + '\'' +
                 ", model=" + model +
+                ", responseType=" + responseType +
                 '}';
     }
 }

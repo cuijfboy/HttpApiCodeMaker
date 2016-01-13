@@ -3,8 +3,6 @@ package name.ilab.http;
 import name.ilab.http.code.template.BaseRequest;
 import name.ilab.http.code.template.BaseResponse;
 
-import java.util.Map;
-
 /**
  * Created by cuijfboy on 15/11/30.
  */
@@ -21,12 +19,12 @@ public class EmptyHook implements IApiHook {
     }
 
     @Override
-    public void onResponse(String apiName, BaseResponse response) {
+    public void onResponse(String apiName, ResponseType type, BaseResponse response) {
 
     }
 
     @Override
-    public void onResponseData(String apiName, BaseResponse data, Class dataClass) {
+    public void onResponseData(String apiName, ResponseType type, BaseResponse data, Class dataClass) {
 
     }
 }

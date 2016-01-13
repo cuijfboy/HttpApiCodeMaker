@@ -1,5 +1,8 @@
 package name.ilab.http;
 
+import java.io.File;
+import java.util.Collections;
+
 /**
  * Created by cuijfboy on 15/12/1.
  */
@@ -16,6 +19,18 @@ public class MockHttpClient implements IHttpClient {
         System.out.println("MockHttpClient response.header = " + null);
         System.out.println("MockHttpClient response.body = " + null);
 
-        request.onResponse(200, null, null);
+        switch (request.getResponseType()) {
+            case TEXT:
+                request.onResponse(200, Collections.<String, String>emptyMap(), "{}");
+                break;
+            case FILE:
+                request.onResponse(200, Collections.<String, String>emptyMap(), new File(""));
+                break;
+            case BINARY:
+                request.onResponse(200, Collections.<String, String>emptyMap(), new byte[]{0});
+                break;
+            default:
+                break;
+        }
     }
 }
