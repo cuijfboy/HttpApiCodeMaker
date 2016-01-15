@@ -37,35 +37,42 @@ public class ${api.name} extends BaseRequest {
         </#list>
 
         private void generateMethod() {
-            method = HttpMethod.${api.method};
+            if (method == null) {
+                method = HttpMethod.${api.method};
+            }
         }
 
         private void generateUrl() {
-            url = "${api.fullUrl}";
-            <#if api.method == 'GET'>
-            if (HttpMethod.GET == method) {
-                StringBuffer sb = new StringBuffer(url);
-                sb.append("?");
-                <#list api.request.body?keys as parameter>
-                sb.append("${parameter}").append("=").append(${parameter}).append("&");
-                </#list>
-                sb.deleteCharAt(sb.length() - 1);
-                if (sb.length() != url.length()) {
-                    url = sb.toString();
+            if (url == null) {
+                url = "${api.fullUrl}";
+                <#if api.method == 'GET'>
+                if (HttpMethod.GET == method) {
+                    StringBuffer sb = new StringBuffer(url);
+                    sb.append("?");
+                    <#list api.request.body?keys as parameter>
+                    sb.append("${parameter}").append("=").append(${parameter}).append("&");
+                    </#list>
+                    sb.deleteCharAt(sb.length() - 1);
+                    if (sb.length() != url.length()) {
+                        url = sb.toString();
+                    }
                 }
+                </#if>
             }
-            </#if>
         }
 
         private void generateHeader() {
-            header.clear();
-            <#list api.request.header?keys as parameter>
-            header.put("${parameter}", ${parameter});
-            </#list>
+            if (header.isEmpty()) {
+                <#list api.request.header?keys as parameter>
+                header.put("${parameter}", ${parameter});
+                </#list>
+            }
         }
 
         private void generateBody() {
-            body = new Gson().toJson(this);
+            if (body == null) {
+                body = new Gson().toJson(this);
+            }
         }
     }
 
@@ -107,12 +114,16 @@ public class ${api.name} extends BaseRequest {
     }
 
     public ${api.name} go(IHttpClient httpClient) {
-        hook.onRequestData(API_NAME, request, request.getClass());
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
+        if (hook != null) {
+            hook.onRequestData(API_NAME, request, request.getClass());
+        }
         request.generateBody();
-        hook.onRequest(API_NAME, this, request, request.getClass());
+        if (hook != null) {
+            hook.onRequest(API_NAME, this, request, request.getClass());
+        }
         httpClient.request(this);
         return this;
     }
@@ -178,26 +189,34 @@ public class ${api.name} extends BaseRequest {
     public final void onResponse(int statusCode, Map<String, String> header, String body) {
         BaseResponse baseResponse = new BaseResponse(statusCode, method, url, header);
         baseResponse.setBody(body);
-        hook.onResponse(API_NAME, responseType, baseResponse);
+        if (hook != null) {
+            hook.onResponse(API_NAME, responseType, baseResponse);
+        }
         generateResponseData(baseResponse);
-        hook.onResponseData(API_NAME, responseType, response, response.getClass());
+        if (hook != null) {
+            hook.onResponseData(API_NAME, responseType, response, response.getClass());
+        }
         onResponse(statusCode, response);
     }
 
     @Override
     public final void onResponse(int statusCode, Map<String, String> header, File file) {
         generateResponseData(statusCode, method, url, header, file);
-        hook.onResponse(API_NAME, responseType, response);
-        hook.onResponseData(API_NAME, responseType, response, response.getClass());
-        onResponse(statusCode, response);
+        onResponse();
     }
 
     @Override
     public final void onResponse(int statusCode, Map<String, String> header, byte[] data) {
         generateResponseData(statusCode, method, url, header, data);
-        hook.onResponse(API_NAME, responseType, response);
-        hook.onResponseData(API_NAME, responseType, response, response.getClass());
-        onResponse(statusCode, response);
+        onResponse();
+    }
+
+    private void onResponse() {
+        if (hook != null) {
+            hook.onResponse(API_NAME, responseType, response);
+            hook.onResponseData(API_NAME, responseType, response, response.getClass());
+        }
+        onResponse(response.getStatusCode(), response);
     }
 
     public boolean onResponse(int statusCode, Response response) {

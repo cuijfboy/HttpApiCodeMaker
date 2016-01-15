@@ -5,7 +5,7 @@ import name.ilab.http.*;
 /**
  * Created by cuijfboy on 15/11/28.
  */
-public class SampleHook extends EmptyHook {
+public class SampleHook extends SimpleHook {
     @Override
     public void onRequestData(String apiName, Object data, Class dataClass) {
         System.out.println();

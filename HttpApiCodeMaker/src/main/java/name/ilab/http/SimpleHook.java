@@ -3,7 +3,7 @@ package name.ilab.http;
 /**
  * Created by cuijfboy on 15/11/30.
  */
-public class EmptyHook implements IApiHook {
+public class SimpleHook implements IApiHook {
 
     @Override
     public void onRequestData(String apiName, Object data, Class dataClass) {

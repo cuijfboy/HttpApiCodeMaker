@@ -1,10 +1,5 @@
 package name.ilab.http;
 
-import name.ilab.http.EmptyHook;
-import name.ilab.http.IApiHook;
-import name.ilab.http.IHttpClient;
-import name.ilab.http.MockHttpClient;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +19,11 @@ public class Utils {
 
     private static Map<String, IApiHook> hookMap = new HashMap<>();
     private static List<String> badHookList = new ArrayList<>();
-    private static final EmptyHook EMPTY_HOOK = new EmptyHook();
+    private static final SimpleHook EMPTY_HOOK = new SimpleHook();
 
     public static synchronized IApiHook getHook(String name) {
         if (name == null || badHookList.contains(name)) {
-            return EMPTY_HOOK;
+            return null;
         }
         IApiHook hook = hookMap.get(name);
         if (hook == null) {
@@ -38,7 +33,7 @@ public class Utils {
             } catch (Exception e) {
                 e.printStackTrace();
                 badHookList.add(name);
-                hook = EMPTY_HOOK;
+                hook = null;
             }
         }
         return hook;

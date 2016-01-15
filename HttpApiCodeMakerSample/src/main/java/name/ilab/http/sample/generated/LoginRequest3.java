@@ -26,29 +26,36 @@ public class LoginRequest3 extends BaseRequest {
         public String userPassword;
 
         private void generateMethod() {
-            method = HttpMethod.GET;
+            if (method == null) {
+                method = HttpMethod.GET;
+            }
         }
 
         private void generateUrl() {
-            url = "http://www.example.com/login";
-            if (HttpMethod.GET == method) {
-                StringBuffer sb = new StringBuffer(url);
-                sb.append("?");
-                sb.append("userName").append("=").append(userName).append("&");
-                sb.append("userPassword").append("=").append(userPassword).append("&");
-                sb.deleteCharAt(sb.length() - 1);
-                if (sb.length() != url.length()) {
-                    url = sb.toString();
+            if (url == null) {
+                url = "http://www.example.com/login";
+                if (HttpMethod.GET == method) {
+                    StringBuffer sb = new StringBuffer(url);
+                    sb.append("?");
+                    sb.append("userName").append("=").append(userName).append("&");
+                    sb.append("userPassword").append("=").append(userPassword).append("&");
+                    sb.deleteCharAt(sb.length() - 1);
+                    if (sb.length() != url.length()) {
+                        url = sb.toString();
+                    }
                 }
             }
         }
 
         private void generateHeader() {
-            header.clear();
+            if (header.isEmpty()) {
+            }
         }
 
         private void generateBody() {
-            body = new Gson().toJson(this);
+            if (body == null) {
+                body = new Gson().toJson(this);
+            }
         }
     }
 
@@ -76,12 +83,16 @@ public class LoginRequest3 extends BaseRequest {
     }
 
     public LoginRequest3 go(IHttpClient httpClient) {
-        hook.onRequestData(API_NAME, request, request.getClass());
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
+        if (hook != null) {
+            hook.onRequestData(API_NAME, request, request.getClass());
+        }
         request.generateBody();
-        hook.onRequest(API_NAME, this, request, request.getClass());
+        if (hook != null) {
+            hook.onRequest(API_NAME, this, request, request.getClass());
+        }
         httpClient.request(this);
         return this;
     }
@@ -130,26 +141,34 @@ public class LoginRequest3 extends BaseRequest {
     public final void onResponse(int statusCode, Map<String, String> header, String body) {
         BaseResponse baseResponse = new BaseResponse(statusCode, method, url, header);
         baseResponse.setBody(body);
-        hook.onResponse(API_NAME, responseType, baseResponse);
+        if (hook != null) {
+            hook.onResponse(API_NAME, responseType, baseResponse);
+        }
         generateResponseData(baseResponse);
-        hook.onResponseData(API_NAME, responseType, response, response.getClass());
+        if (hook != null) {
+            hook.onResponseData(API_NAME, responseType, response, response.getClass());
+        }
         onResponse(statusCode, response);
     }
 
     @Override
     public final void onResponse(int statusCode, Map<String, String> header, File file) {
         generateResponseData(statusCode, method, url, header, file);
-        hook.onResponse(API_NAME, responseType, response);
-        hook.onResponseData(API_NAME, responseType, response, response.getClass());
-        onResponse(statusCode, response);
+        onResponse();
     }
 
     @Override
     public final void onResponse(int statusCode, Map<String, String> header, byte[] data) {
         generateResponseData(statusCode, method, url, header, data);
-        hook.onResponse(API_NAME, responseType, response);
-        hook.onResponseData(API_NAME, responseType, response, response.getClass());
-        onResponse(statusCode, response);
+        onResponse();
+    }
+
+    private void onResponse() {
+        if (hook != null) {
+            hook.onResponse(API_NAME, responseType, response);
+            hook.onResponseData(API_NAME, responseType, response, response.getClass());
+        }
+        onResponse(response.getStatusCode(), response);
     }
 
     public boolean onResponse(int statusCode, Response response) {
