@@ -1,0 +1,17 @@
+{
+  "global": {
+    "packageName": "name.ilab.http.preset",
+    "codeFileFolder": "./src/main/java/name/ilab/http/preset/"
+  },
+  "local": {
+    "FileDownloadRequest": {
+      "method": "GET",
+      "fullUrl": "http://www.example.com/",
+      "response": {
+        "body": {
+          "file": "File"
+        }
+      }
+    }
+  }
+}

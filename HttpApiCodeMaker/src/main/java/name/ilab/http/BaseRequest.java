@@ -1,16 +1,20 @@
 package name.ilab.http;
 
+import name.ilab.http.maker.HttpApiCode;
+
 import java.util.Map;
 
 /**
  * Created by cuijfboy on 15/11/28.
  */
+@HttpApiCode(configFile = "preset_api.json")
 public abstract class BaseRequest implements IHttpRequest {
     protected HttpMethod method;
     protected String url;
     protected Map<String, String> header;
     protected String body;
     protected ResponseType responseType;
+    protected String fileSavePath;
 
     @Override
     public HttpMethod getMethod() {
@@ -37,6 +41,11 @@ public abstract class BaseRequest implements IHttpRequest {
         return responseType;
     }
 
+    @Override
+    public String getFileSavePath() {
+        return null;
+    }
+
     public void setMethod(HttpMethod method) {
         this.method = method;
     }
@@ -57,4 +66,7 @@ public abstract class BaseRequest implements IHttpRequest {
         this.responseType = responseType;
     }
 
+    public void setFileSavePath(String fileSavePath) {
+        this.fileSavePath = fileSavePath;
+    }
 }

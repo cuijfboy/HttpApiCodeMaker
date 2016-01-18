@@ -21,6 +21,8 @@ public class SampleHook extends SimpleHook {
         System.out.println("SampleHook onRequest url = " + request.getUrl());
         System.out.println("SampleHook onRequest header = " + request.getHeader());
         System.out.println("SampleHook onRequest body = " + request.getBody());
+        System.out.println("SampleHook onRequest responseType = " + request.getResponseType());
+        System.out.println("SampleHook onRequest fileSavePath = " + request.getFileSavePath());
         System.out.println("SampleHook onRequest data = " + data);
         System.out.println("SampleHook onRequest dataClass = " + dataClass);
 

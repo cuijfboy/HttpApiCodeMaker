@@ -18,6 +18,8 @@ public interface IHttpRequest {
 
     ResponseType getResponseType();
 
+    String getFileSavePath();
+
     void onResponse(int statusCode, Map<String, String> header, String body);
 
     void onResponse(int statusCode, Map<String, String> header, File file);

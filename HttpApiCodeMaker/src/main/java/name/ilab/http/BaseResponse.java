@@ -6,17 +6,24 @@ import java.util.Map;
  * Created by cuijfboy on 16/1/9.
  */
 public class BaseResponse {
+    protected ResponseType responseType;
     protected int statusCode;
     protected HttpMethod method;
     protected String url;
     protected Map<String, String> header;
     protected String body;
+    protected String fileSavePath;
 
     public BaseResponse() {
-
     }
 
-    public BaseResponse(int statusCode, HttpMethod method, String url, Map<String, String> header) {
+    public BaseResponse(BaseResponse response) {
+        set(response);
+    }
+
+    public BaseResponse(ResponseType responseType,
+                        int statusCode, HttpMethod method, String url, Map<String, String> header) {
+        this.responseType = responseType;
         this.statusCode = statusCode;
         this.method = method;
         this.url = url;
@@ -24,11 +31,13 @@ public class BaseResponse {
     }
 
     public void set(BaseResponse response) {
+        this.responseType = response.responseType;
         this.statusCode = response.statusCode;
         this.method = response.method;
         this.url = response.url;
         this.header = response.header;
         this.body = response.body;
+        this.fileSavePath = response.fileSavePath;
     }
 
     public int getStatusCode() {
@@ -51,6 +60,14 @@ public class BaseResponse {
         return body;
     }
 
+    public ResponseType getResponseType() {
+        return responseType;
+    }
+
+    public String getFileSavePath() {
+        return fileSavePath;
+    }
+
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
@@ -71,4 +88,11 @@ public class BaseResponse {
         this.body = body;
     }
 
+    public void setResponseType(ResponseType responseType) {
+        this.responseType = responseType;
+    }
+
+    public void setFileSavePath(String fileSavePath) {
+        this.fileSavePath = fileSavePath;
+    }
 }

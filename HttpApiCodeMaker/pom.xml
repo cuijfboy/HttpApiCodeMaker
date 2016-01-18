@@ -6,7 +6,7 @@
 
 	<groupId>name.ilab</groupId>
 	<artifactId>http-api-code-maker</artifactId>
-	<version>0.4.0</version>
+	<version>0.4.1</version>
 	<name>HttpApiCodeMaker</name>
 	<description>It's a tool for you which can transform your API config files into java code files.</description>
 	<url>https://github.com/cuijfboy/HttpApiCodeMaker</url>

@@ -61,12 +61,13 @@ public class LoginRequest3 extends BaseRequest {
 
     public class Response extends BaseResponse {
 
-        public Response(int statusCode, HttpMethod method, String url, Map<String, String> header) {
-            super(statusCode, method, url, header);
+        public Response(BaseResponse response) {
+            super(response);
         }
 
-        public Response(BaseResponse baseResponse) {
-            set(baseResponse);
+        public Response(ResponseType responseType,
+                        int statusCode, HttpMethod method, String url, Map<String, String> header) {
+            super(responseType, statusCode, method, url, header);
         }
 
         public transient String session;
@@ -103,13 +104,14 @@ public class LoginRequest3 extends BaseRequest {
 
     private void generateResponseData(int statusCode, HttpMethod method, String url, Map<String, String> header,
                                       File file) {
-        response = new Response(statusCode, method, url, header);
+        response = new Response(responseType, statusCode, method, url, header);
+        response.setFileSavePath(fileSavePath);
         fillResponseHeader(header);
     }
 
     private void generateResponseData(int statusCode, HttpMethod method, String url, Map<String, String> header,
                                       byte[] data) {
-        response = new Response(statusCode, method, url, header);
+        response = new Response(responseType, statusCode, method, url, header);
         response.myData = data;
         fillResponseHeader(header);
     }
@@ -139,7 +141,7 @@ public class LoginRequest3 extends BaseRequest {
 
     @Override
     public final void onResponse(int statusCode, Map<String, String> header, String body) {
-        BaseResponse baseResponse = new BaseResponse(statusCode, method, url, header);
+        BaseResponse baseResponse = new BaseResponse(responseType, statusCode, method, url, header);
         baseResponse.setBody(body);
         if (hook != null) {
             hook.onResponse(API_NAME, responseType, baseResponse);

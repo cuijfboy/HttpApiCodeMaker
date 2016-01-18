@@ -1,4 +1,4 @@
-package name.ilab.http.sample.generated;
+package name.ilab.http.preset;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,25 +15,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class LoginRequest2 extends BaseRequest {
+public class FileDownloadRequest extends BaseRequest {
     public static final String API_NAME =
-            "name.ilab.http.sample.generated.LoginRequest2";
-    public static final String HOOK_NAME =
-            "name.ilab.http.sample.SampleHook";
+            "name.ilab.http.preset.FileDownloadRequest";
+    public static final String HOOK_NAME = null;
 
     public class Request {
-        public String userName;
-        public String userPassword;
 
         private void generateMethod() {
             if (method == null) {
-                method = HttpMethod.POST;
+                method = HttpMethod.GET;
             }
         }
 
         private void generateUrl() {
             if (url == null) {
-                url = "http://www.example.com/login";
+                url = "http://www.example.com/";
+                if (HttpMethod.GET == method) {
+                    StringBuffer sb = new StringBuffer(url);
+                    sb.append("?");
+                    sb.deleteCharAt(sb.length() - 1);
+                    if (sb.length() != url.length()) {
+                        url = sb.toString();
+                    }
+                }
             }
         }
 
@@ -60,20 +65,19 @@ public class LoginRequest2 extends BaseRequest {
             super(responseType, statusCode, method, url, header);
         }
 
-        public transient String session;
-        public File myFile;
+        public File file;
     }
 
     // --------------------------------------------------------------------------------------------
 
-    public LoginRequest2() {
+    public FileDownloadRequest() {
         this.header = new HashMap<>();
         this.hook = Utils.getHook(HOOK_NAME);
         this.request = new Request();
         this.responseType = ResponseType.FILE;
     }
 
-    public LoginRequest2 go(IHttpClient httpClient) {
+    public FileDownloadRequest go(IHttpClient httpClient) {
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
@@ -88,7 +92,7 @@ public class LoginRequest2 extends BaseRequest {
         return this;
     }
 
-    public LoginRequest2 go() {
+    public FileDownloadRequest go() {
         return go(Utils.getMockHttpClient());
     }
 
@@ -96,7 +100,7 @@ public class LoginRequest2 extends BaseRequest {
                                       File file) {
         response = new Response(responseType, statusCode, method, url, header);
         response.setFileSavePath(fileSavePath);
-        response.myFile = file;
+        response.file = file;
         fillResponseHeader(header);
     }
 
@@ -108,7 +112,6 @@ public class LoginRequest2 extends BaseRequest {
 
     private void fillResponseHeader(Map<String, String> header) {
         if (header != null) {
-            response.session = header.get("session");
         }
     }
 
