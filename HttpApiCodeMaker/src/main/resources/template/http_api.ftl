@@ -62,11 +62,13 @@ public class ${api.name} extends BaseRequest {
         }
 
         private void generateHeader() {
+            <#if (api.request.header?size > 0)>
             if (header.isEmpty()) {
                 <#list api.request.header?keys as parameter>
                 header.put("${parameter}", ${parameter});
                 </#list>
             }
+            </#if>
         }
 
         private void generateBody() {
@@ -163,11 +165,13 @@ public class ${api.name} extends BaseRequest {
     }
 
     private void fillResponseHeader(Map<String, String> header) {
+        <#if (api.response.header?size > 0)>
         if (header != null) {
             <#list api.response.header?keys as parameter>
             response.${parameter} = header.get("${parameter}");
             </#list>
         }
+        </#if>
     }
 
 // ################################################################################################

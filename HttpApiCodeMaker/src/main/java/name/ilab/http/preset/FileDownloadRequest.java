@@ -43,8 +43,6 @@ public class FileDownloadRequest extends BaseRequest {
         }
 
         private void generateHeader() {
-            if (header.isEmpty()) {
-            }
         }
 
         private void generateBody() {
@@ -111,8 +109,6 @@ public class FileDownloadRequest extends BaseRequest {
     }
 
     private void fillResponseHeader(Map<String, String> header) {
-        if (header != null) {
-        }
     }
 
 // ################################################################################################

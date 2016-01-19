@@ -38,8 +38,6 @@ public class LoginRequest2 extends BaseRequest {
         }
 
         private void generateHeader() {
-            if (header.isEmpty()) {
-            }
         }
 
         private void generateBody() {
