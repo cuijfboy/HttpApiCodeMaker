@@ -95,4 +95,17 @@ public class BaseResponse {
     public void setFileSavePath(String fileSavePath) {
         this.fileSavePath = fileSavePath;
     }
+
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "responseType=" + responseType +
+                ", method=" + method +
+                ", url='" + url + '\'' +
+                ", statusCode=" + statusCode +
+                ", header=" + header +
+                ", body='" + body + '\'' +
+                ", fileSavePath='" + fileSavePath + '\'' +
+                '}';
+    }
 }

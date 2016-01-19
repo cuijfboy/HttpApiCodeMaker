@@ -12,5 +12,5 @@ repositories {
 dependencies {
     compile "com.google.code.gson:gson:2.5"
     compile "org.freemarker:freemarker:2.3.23"
-    compile files("./../http-api-code-maker-0.4.1.jar")
+    compile files("./../http-api-code-maker-0.4.2.jar")
 }

@@ -43,7 +43,7 @@ public abstract class BaseRequest implements IHttpRequest {
 
     @Override
     public String getFileSavePath() {
-        return null;
+        return fileSavePath;
     }
 
     public void setMethod(HttpMethod method) {
@@ -68,5 +68,17 @@ public abstract class BaseRequest implements IHttpRequest {
 
     public void setFileSavePath(String fileSavePath) {
         this.fileSavePath = fileSavePath;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseRequest{" +
+                "method=" + method +
+                ", responseType=" + responseType +
+                ", url='" + url + '\'' +
+                ", header=" + header +
+                ", fileSavePath='" + fileSavePath + '\'' +
+                ", body='" + body + '\'' +
+                '}';
     }
 }
