@@ -1,0 +1,128 @@
+{
+  "global": {
+    "codeFileFolder": "./src/main/java/name/ilab/http/sample/generated/",
+    "packageName": "name.ilab.http.sample.generated",
+    "importList": [],
+    "method": "GET",
+    "urlBase": "http://www.example.com/",
+    "request": {
+      "header": {
+        "commonRequestHeaderArg1": "String",
+        "commonRequestHeaderArg2": "String"
+      },
+      "body": {
+        "commonRequestBodyArg1": "String",
+        "commonRequestBodyArg2": "int"
+      }
+    },
+    "response": {
+      "header": {
+        "commonResponseHeaderArg1": "String",
+        "commonResponseHeaderArg2": "String"
+      },
+      "body": {
+        "commonResponseBodyArg1": "String",
+        "commonResponseBodyArg2": "int"
+      }
+    },
+    "model": {
+      "commonModelA": {
+        "commonModelAArg1": "String",
+        "commonModelAArg2": "int"
+      },
+      "commonModelB": {
+        "commonModelBArg1": "String",
+        "commonModelBArg2": "int"
+      }
+    },
+    "hookName": "name.ilab.http.sample.SampleHook"
+  },
+  "local": {
+    "SampleApiA": {
+      "importList": [],
+      "method": "GET",
+      "url": "sampleApiA",
+      "fullUrl": "http://www.example.com/sampleApiA",
+      "request": {
+        "header": {
+          "sampleApiARequestHeaderArg1": "String",
+          "sampleApiARequestHeaderArg2": "String"
+        },
+        "body": {
+          "sampleApiARequestBodyArg1": "String",
+          "sampleApiARequestBodyArg2": "int",
+          "sampleApiARequestBodyArg3": "SampleApiAModelA"
+        }
+      },
+      "response": {
+        "header": {
+          "sampleApiAResponseHeaderArg1": "String",
+          "sampleApiAResponseHeaderArg2": "String"
+        },
+        "body": {
+          "sampleApiAResponseBodyArg1": "String",
+          "sampleApiAResponseBodyArg2": "int",
+          "sampleApiAResponseBodyArg3": "SampleApiAModelB"
+        }
+      },
+      "model": {
+        "SampleApiAModelA": {
+          "sampleApiAModelAArg1": "String",
+          "sampleApiAModelAArg2": "int"
+        },
+        "SampleApiAModelB": {
+          "sampleApiAModelBArg1": "String",
+          "sampleApiAModelBArg2": "int"
+        }
+      },
+      "hookName": "name.ilab.http.sample.SampleHook"
+    },
+    "SampleApiB": {
+      "url": "sampleApiB",
+      "request": {
+        "header": {
+          "sampleApiBRequestHeaderArg1": "String",
+          "sampleApiBRequestHeaderArg2": "String",
+          "commonRequestHeaderArg1": null
+        },
+        "body": {
+          "sampleApiBRequestBodyArg1": "String",
+          "sampleApiBRequestBodyArg2": "int",
+          "commonRequestBodyArg1": null
+        }
+      },
+      "response": {
+        "header": {
+          "sampleApiBResponseHeaderArg1": "String",
+          "sampleApiBResponseHeaderArg2": "String",
+          "commonResponseHeaderArg1": null
+        },
+        "body": {
+          "sampleApiBResponseBodyArg1": "String",
+          "sampleApiBResponseBodyArg2": "int",
+          "commonResponseBodyArg2": null
+        }
+      }
+    },
+    "SampleApiC": {
+      "url": "sampleApiC",
+      "response": {
+        "body": {
+          "sampleApiCResponseBodyFile": "File",
+          "commonResponseBodyArg1": null,
+          "commonResponseBodyArg2": null
+        }
+      }
+    },
+    "SampleApiD": {
+      "url": "sampleApiD",
+      "response": {
+        "body": {
+          "sampleApiCResponseBodyBinaryData": "byte[]",
+          "commonResponseBodyArg1": null,
+          "commonResponseBodyArg2": null
+        }
+      }
+    }
+  }
+}

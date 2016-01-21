@@ -6,13 +6,13 @@ import java.util.Map;
  * Created by cuijfboy on 16/1/9.
  */
 public class BaseResponse {
-    protected ResponseType responseType;
-    protected int statusCode;
-    protected HttpMethod method;
-    protected String url;
-    protected Map<String, String> header;
-    protected String body;
-    protected String fileSavePath;
+    private ResponseType responseType;
+    private int statusCode;
+    private HttpMethod method;
+    private String url;
+    private Map<String, String> header;
+    private String body;
+    private String fileSavePath;
 
     public BaseResponse() {
     }

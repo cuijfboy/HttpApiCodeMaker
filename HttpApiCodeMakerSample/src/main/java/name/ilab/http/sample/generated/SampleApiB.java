@@ -1,4 +1,4 @@
-package name.ilab.http.preset;
+package name.ilab.http.sample.generated;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,12 +15,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FileDownloadRequest extends BaseRequest {
+public class SampleApiB extends BaseRequest {
     public static final String API_NAME =
-            "name.ilab.http.preset.FileDownloadRequest";
-    public static final String HOOK_NAME = null;
+            "name.ilab.http.sample.generated.SampleApiB";
+    public static final String HOOK_NAME =
+            "name.ilab.http.sample.SampleHook";
 
     public class Request {
+        public transient String sampleApiBRequestHeaderArg1;
+        public transient String sampleApiBRequestHeaderArg2;
+        public transient String commonRequestHeaderArg2;
+        public String sampleApiBRequestBodyArg1;
+        public int sampleApiBRequestBodyArg2;
+        public int commonRequestBodyArg2;
 
         private void generateMethod() {
             if (method == null) {
@@ -30,10 +37,13 @@ public class FileDownloadRequest extends BaseRequest {
 
         private void generateUrl() {
             if (url == null) {
-                url = "http://www.example.com/";
+                url = "http://www.example.com/sampleApiB";
                 if (HttpMethod.GET == method) {
                     StringBuffer sb = new StringBuffer(url);
                     sb.append("?");
+                    sb.append("sampleApiBRequestBodyArg1").append("=").append(sampleApiBRequestBodyArg1).append("&");
+                    sb.append("sampleApiBRequestBodyArg2").append("=").append(sampleApiBRequestBodyArg2).append("&");
+                    sb.append("commonRequestBodyArg2").append("=").append(commonRequestBodyArg2).append("&");
                     sb.deleteCharAt(sb.length() - 1);
                     if (sb.length() != url.length()) {
                         url = sb.toString();
@@ -43,6 +53,11 @@ public class FileDownloadRequest extends BaseRequest {
         }
 
         private void generateHeader() {
+            if (header.isEmpty()) {
+                header.put("sampleApiBRequestHeaderArg1", sampleApiBRequestHeaderArg1);
+                header.put("sampleApiBRequestHeaderArg2", sampleApiBRequestHeaderArg2);
+                header.put("commonRequestHeaderArg2", commonRequestHeaderArg2);
+            }
         }
 
         private void generateBody() {
@@ -63,19 +78,24 @@ public class FileDownloadRequest extends BaseRequest {
             super(responseType, statusCode, method, url, header);
         }
 
-        public File file;
+        public transient String sampleApiBResponseHeaderArg1;
+        public transient String sampleApiBResponseHeaderArg2;
+        public transient String commonResponseHeaderArg2;
+        public String sampleApiBResponseBodyArg1;
+        public int sampleApiBResponseBodyArg2;
+        public String commonResponseBodyArg1;
     }
 
     // --------------------------------------------------------------------------------------------
 
-    public FileDownloadRequest() {
+    public SampleApiB() {
         this.header = new HashMap<>();
         this.hook = Utils.getHook(HOOK_NAME);
         this.request = new Request();
-        this.responseType = ResponseType.FILE;
+        this.responseType = ResponseType.TEXT;
     }
 
-    public FileDownloadRequest go(IHttpClient httpClient) {
+    public SampleApiB go(IHttpClient httpClient) {
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
@@ -90,7 +110,7 @@ public class FileDownloadRequest extends BaseRequest {
         return this;
     }
 
-    public FileDownloadRequest go() {
+    public SampleApiB go() {
         return go(Utils.getMockHttpClient());
     }
 
@@ -98,7 +118,6 @@ public class FileDownloadRequest extends BaseRequest {
                                       File file) {
         response = new Response(responseType, statusCode, method, url, header);
         response.setFileSavePath(fileSavePath);
-        response.file = file;
         fillResponseHeader(header);
     }
 
@@ -109,6 +128,11 @@ public class FileDownloadRequest extends BaseRequest {
     }
 
     private void fillResponseHeader(Map<String, String> header) {
+        if (header != null) {
+            response.sampleApiBResponseHeaderArg1 = header.get("sampleApiBResponseHeaderArg1");
+            response.sampleApiBResponseHeaderArg2 = header.get("sampleApiBResponseHeaderArg2");
+            response.commonResponseHeaderArg2 = header.get("commonResponseHeaderArg2");
+        }
     }
 
 // ################################################################################################

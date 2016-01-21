@@ -9,18 +9,34 @@ import java.util.*;
  * Created by cuijfboy on 15/11/28.
  */
 public class HttpApi {
+    // local
     private String name;
+    // local & global
     private HttpMethod method;
+    // local
     private String fullUrl;
+    // local
     private String url;
+    // global
     private String urlBase;
-    private Map<String, Map<String, String>> request; // Map< "head" or "body", Map< fieldName, fieldClassName >>
-    private Map<String, Map<String, String>> response; // Map< "head" or "body", < fieldName, fieldClassName >>
+    // local & global
+    // Map< "head" or "body", Map< fieldName, fieldClassName >>
+    private Map<String, Map<String, String>> request;
+    // local & global
+    // Map< "head" or "body", < fieldName, fieldClassName >>
+    private Map<String, Map<String, String>> response;
+    // global
     private String packageName;
+    // local & global
     private String hookName;
+    // local & global
     private List<String> importList;
+    // global
     private String codeFileFolder;
-    private Map<String, Map<String, String>> model; // Map< className, Map< fieldName, fieldClassName >>
+    // local & global
+    // Map< className, Map< fieldName, fieldClassName >>
+    private Map<String, Map<String, String>> model;
+    // auto
     private ResponseType responseType;
 
     public void prepare() {

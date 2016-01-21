@@ -15,15 +15,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class LoginRequest3 extends BaseRequest {
+public class SampleApiD extends BaseRequest {
     public static final String API_NAME =
-            "name.ilab.http.sample.generated.LoginRequest3";
+            "name.ilab.http.sample.generated.SampleApiD";
     public static final String HOOK_NAME =
             "name.ilab.http.sample.SampleHook";
 
     public class Request {
-        public String userName;
-        public String userPassword;
+        public transient String commonRequestHeaderArg2;
+        public transient String commonRequestHeaderArg1;
+        public String commonRequestBodyArg1;
+        public int commonRequestBodyArg2;
 
         private void generateMethod() {
             if (method == null) {
@@ -33,12 +35,12 @@ public class LoginRequest3 extends BaseRequest {
 
         private void generateUrl() {
             if (url == null) {
-                url = "http://www.example.com/login";
+                url = "http://www.example.com/sampleApiD";
                 if (HttpMethod.GET == method) {
                     StringBuffer sb = new StringBuffer(url);
                     sb.append("?");
-                    sb.append("userName").append("=").append(userName).append("&");
-                    sb.append("userPassword").append("=").append(userPassword).append("&");
+                    sb.append("commonRequestBodyArg1").append("=").append(commonRequestBodyArg1).append("&");
+                    sb.append("commonRequestBodyArg2").append("=").append(commonRequestBodyArg2).append("&");
                     sb.deleteCharAt(sb.length() - 1);
                     if (sb.length() != url.length()) {
                         url = sb.toString();
@@ -48,6 +50,10 @@ public class LoginRequest3 extends BaseRequest {
         }
 
         private void generateHeader() {
+            if (header.isEmpty()) {
+                header.put("commonRequestHeaderArg2", commonRequestHeaderArg2);
+                header.put("commonRequestHeaderArg1", commonRequestHeaderArg1);
+            }
         }
 
         private void generateBody() {
@@ -68,35 +74,36 @@ public class LoginRequest3 extends BaseRequest {
             super(responseType, statusCode, method, url, header);
         }
 
-        public transient String session;
-        public byte[] myData;
+        public transient String commonResponseHeaderArg2;
+        public transient String commonResponseHeaderArg1;
+        public byte[] sampleApiCResponseBodyBinaryData;
     }
 
     // --------------------------------------------------------------------------------------------
 
-    public LoginRequest3() {
+    public SampleApiD() {
         this.header = new HashMap<>();
         this.hook = Utils.getHook(HOOK_NAME);
         this.request = new Request();
         this.responseType = ResponseType.BINARY;
     }
 
-    public LoginRequest3 go(IHttpClient httpClient) {
+    public SampleApiD go(IHttpClient httpClient) {
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
         if (hook != null) {
-            hook.onRequestData(API_NAME, request, request.getClass());
+            hook.onRequestData(API_NAME, request, Request.class);
         }
         request.generateBody();
         if (hook != null) {
-            hook.onRequest(API_NAME, this, request, request.getClass());
+            hook.onRequest(API_NAME, this, request, Request.class);
         }
         httpClient.request(this);
         return this;
     }
 
-    public LoginRequest3 go() {
+    public SampleApiD go() {
         return go(Utils.getMockHttpClient());
     }
 
@@ -110,13 +117,14 @@ public class LoginRequest3 extends BaseRequest {
     private void generateResponseData(int statusCode, HttpMethod method, String url, Map<String, String> header,
                                       byte[] data) {
         response = new Response(responseType, statusCode, method, url, header);
-        response.myData = data;
+        response.sampleApiCResponseBodyBinaryData = data;
         fillResponseHeader(header);
     }
 
     private void fillResponseHeader(Map<String, String> header) {
         if (header != null) {
-            response.session = header.get("session");
+            response.commonResponseHeaderArg2 = header.get("commonResponseHeaderArg2");
+            response.commonResponseHeaderArg1 = header.get("commonResponseHeaderArg1");
         }
     }
 
@@ -146,7 +154,7 @@ public class LoginRequest3 extends BaseRequest {
         }
         generateResponseData(baseResponse);
         if (hook != null) {
-            hook.onResponseData(API_NAME, responseType, response, response.getClass());
+            hook.onResponseData(API_NAME, responseType, response, Response.class);
         }
         onResponse(statusCode, response);
     }
@@ -166,7 +174,7 @@ public class LoginRequest3 extends BaseRequest {
     private void onResponse() {
         if (hook != null) {
             hook.onResponse(API_NAME, responseType, response);
-            hook.onResponseData(API_NAME, responseType, response, response.getClass());
+            hook.onResponseData(API_NAME, responseType, response, Response.class);
         }
         onResponse(response.getStatusCode(), response);
     }

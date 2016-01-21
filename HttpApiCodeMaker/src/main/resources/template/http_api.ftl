@@ -121,11 +121,11 @@ public class ${api.name} extends BaseRequest {
         request.generateUrl();
         request.generateHeader();
         if (hook != null) {
-            hook.onRequestData(API_NAME, request, request.getClass());
+            hook.onRequestData(API_NAME, request, Request.class);
         }
         request.generateBody();
         if (hook != null) {
-            hook.onRequest(API_NAME, this, request, request.getClass());
+            hook.onRequest(API_NAME, this, request, Request.class);
         }
         httpClient.request(this);
         return this;
@@ -200,7 +200,7 @@ public class ${api.name} extends BaseRequest {
         }
         generateResponseData(baseResponse);
         if (hook != null) {
-            hook.onResponseData(API_NAME, responseType, response, response.getClass());
+            hook.onResponseData(API_NAME, responseType, response, Response.class);
         }
         onResponse(statusCode, response);
     }
@@ -220,7 +220,7 @@ public class ${api.name} extends BaseRequest {
     private void onResponse() {
         if (hook != null) {
             hook.onResponse(API_NAME, responseType, response);
-            hook.onResponseData(API_NAME, responseType, response, response.getClass());
+            hook.onResponseData(API_NAME, responseType, response, Response.class);
         }
         onResponse(response.getStatusCode(), response);
     }
