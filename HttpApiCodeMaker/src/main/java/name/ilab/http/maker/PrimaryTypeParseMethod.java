@@ -47,7 +47,7 @@ public class PrimaryTypeParseMethod implements TemplateMethodModelEx {
     public String getParseMethod(String type, String field) {
         String method = parseMethodMap.get(type);
         return method == null ?
-                String.format("%s.valueOf(%s)", type, field) :
+                String.format("%2$s == null ? null : %1$s.valueOf(%2$s)", type, field) :
                 String.format(method, field);
     }
 

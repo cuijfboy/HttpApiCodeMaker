@@ -190,7 +190,7 @@ public class SampleApiA extends BaseRequest {
             valueString = header.get("sampleApiAResponseHeaderArg2");
             response.sampleApiAResponseHeaderArg2 = valueString == null ? 0 : Integer.parseInt(valueString);
             valueString = header.get("sampleApiAResponseHeaderArg3");
-            response.sampleApiAResponseHeaderArg3 = SampleApiAModelB.valueOf(valueString);
+            response.sampleApiAResponseHeaderArg3 = valueString == null ? null : SampleApiAModelB.valueOf(valueString);
             valueString = header.get("commonResponseHeaderArg2");
             response.commonResponseHeaderArg2 = valueString == null ? 0 : Integer.parseInt(valueString);
             valueString = header.get("commonResponseHeaderArg1");
