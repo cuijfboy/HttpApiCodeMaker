@@ -55,18 +55,18 @@ public class HttpApiCodeMaker {
 
     private void loadApiInfo(String apiJsonInfo) {
         System.out.println();
-        System.out.println("[HttpApiCodeMaker] loading API config ...");
+        System.out.println("[HttpApiCodeMaker] loading API config data ...");
         apiJson = new GsonBuilder().serializeNulls().create().fromJson(apiJsonInfo, HttpApiJson.class);
         apiJson.refresh();
         System.out.println();
-        System.out.println("[HttpApiCodeMaker] global config loaded :\n " + apiJson.getGlobalConfig());
+        System.out.println("[HttpApiCodeMaker] API config data loaded !");
     }
 
     public void generateApiCode() {
         for (HttpApi api : apiJson.getApiMap().values()) {
             System.out.println();
             System.out.println("[HttpApiCodeMaker] generating API : \n " + api);
-            File outputFolder = new File(api.getCodeFileFolder());
+            File outputFolder = new File(api.getOutputPath());
             if (!outputFolder.exists()) {
                 outputFolder.mkdirs();
             }
@@ -78,14 +78,14 @@ public class HttpApiCodeMaker {
 
     private void generateGlobalModelCode() {
         HttpApi global = apiJson.getGlobalConfig();
-        File outputFolder = new File(global.getCodeFileFolder());
+        File outputFolder = new File(global.getOutputPath());
         if (!outputFolder.exists()) {
             outputFolder.mkdirs();
         }
         for (Map.Entry<String, Map<String, String>> model : global.getModel().entrySet()) {
             HttpApi api = new HttpApi();
             api.setImportList(global.getImportList());
-            api.setCodeFileFolder(global.getCodeFileFolder());
+            api.setOutputPath(global.getOutputPath());
             api.setPackageName(global.getPackageName());
             api.setName(model.getKey());
             Map<String, Map<String, String>> parameterMap = new HashMap<>();
@@ -97,13 +97,14 @@ public class HttpApiCodeMaker {
         }
         System.out.println();
         System.out.println("[HttpApiCodeMaker] generated " + apiJson.getGlobalConfig().getModel().size()
-                + " api code file(s).");
+                + " model code file(s).");
     }
 
     private void generateCodeFile(HttpApi api, Template template) {
-        String codeFilePath = api.getCodeFileFolder() + File.separator + api.getName() + ".java";
+        String codeFilePath = api.getOutputPath() + File.separator + api.getName() + ".java";
         Map<String, Object> root = new HashMap<>();
         root.put("api", api);
+        root.put("parsePrimaryTypeData", new PrimaryTypeParseMethod());
         try {
             Writer writer = new OutputStreamWriter(new FileOutputStream(codeFilePath));
             template.process(root, writer);

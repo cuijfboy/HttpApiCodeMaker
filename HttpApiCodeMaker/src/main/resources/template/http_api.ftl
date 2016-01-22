@@ -1,17 +1,15 @@
 package ${api.packageName};
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import name.ilab.http.BaseRequest;
+import name.ilab.http.BaseResponse;
+import name.ilab.http.HttpApiHelper;
+import name.ilab.http.HttpMethod;
 import name.ilab.http.IApiHook;
 import name.ilab.http.IHttpClient;
 import name.ilab.http.ResponseType;
-import name.ilab.http.BaseRequest;
-import name.ilab.http.HttpMethod;
 import name.ilab.http.Utils;
-import name.ilab.http.BaseResponse;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 <#list api.importList as import>
@@ -21,11 +19,11 @@ import ${import};
 public class ${api.name} extends BaseRequest {
     public static final String API_NAME =
             "${api.packageName}.${api.name}";
-    <#if api.hookName??>
-    public static final String HOOK_NAME =
-            "${api.hookName}";
+    <#if api.clientName??>
+    public static final String HTTP_CLIENT_NAME =
+            "${api.clientName}";
     <#else>
-    public static final String HOOK_NAME = null;
+    public static final String HTTP_CLIENT_NAME = null;
     </#if>
 
     public class Request {
@@ -34,6 +32,9 @@ public class ${api.name} extends BaseRequest {
         </#list>
         <#list api.request.body?keys as parameter>
         public ${api.request.body[parameter]} ${parameter};
+        </#list>
+        <#list api.urlParameterMap?keys as parameter>
+        public transient ${api.urlParameterMap[parameter]} ${parameter};
         </#list>
 
         private void generateMethod() {
@@ -45,16 +46,21 @@ public class ${api.name} extends BaseRequest {
         private void generateUrl() {
             if (url == null) {
                 url = "${api.fullUrl}";
+                <#list api.urlParameterMap?keys as parameter>
+                <#assign type = api.urlParameterMap[parameter]/>
+                url = url.replaceAll("\\{${parameter}(:${type})?\\}", String.valueOf(${parameter}));
+                </#list>
                 <#if api.method == 'GET'>
                 if (HttpMethod.GET == method) {
-                    StringBuffer sb = new StringBuffer(url);
-                    sb.append("?");
+                    StringBuffer stringBuffer = new StringBuffer(url);
+                    stringBuffer.append("?");
                     <#list api.request.body?keys as parameter>
-                    sb.append("${parameter}").append("=").append(${parameter}).append("&");
+                    stringBuffer.append("${parameter}").append("=")
+                            .append(${parameter}).append("&");
                     </#list>
-                    sb.deleteCharAt(sb.length() - 1);
-                    if (sb.length() != url.length()) {
-                        url = sb.toString();
+                    stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+                    if (stringBuffer.length() != url.length()) {
+                        url = stringBuffer.toString();
                     }
                 }
                 </#if>
@@ -65,7 +71,7 @@ public class ${api.name} extends BaseRequest {
             <#if (api.request.header?size > 0)>
             if (header.isEmpty()) {
                 <#list api.request.header?keys as parameter>
-                header.put("${parameter}", ${parameter});
+                header.put("${parameter}", String.valueOf(${parameter}));
                 </#list>
             }
             </#if>
@@ -73,12 +79,25 @@ public class ${api.name} extends BaseRequest {
 
         private void generateBody() {
             if (body == null) {
-                body = new Gson().toJson(this);
+                body = toString();
             }
         }
+
+        @Override
+        public String toString() {
+            return Utils.toJson(this);
+        }
+
     }
 
-    public class Response extends BaseResponse {
+    public static class Response extends BaseResponse {
+
+        <#list api.response.header?keys as parameter>
+        public transient ${api.response.header[parameter]} ${parameter};
+        </#list>
+        <#list api.response.body?keys as parameter>
+        public ${api.response.body[parameter]} ${parameter};
+        </#list>
 
         public Response(BaseResponse response) {
             super(response);
@@ -89,20 +108,28 @@ public class ${api.name} extends BaseRequest {
             super(responseType, statusCode, method, url, header);
         }
 
-        <#list api.response.header?keys as parameter>
-        public transient ${api.response.header[parameter]} ${parameter};
-        </#list>
-        <#list api.response.body?keys as parameter>
-        public ${api.response.body[parameter]} ${parameter};
-        </#list>
+        public static Response valueOf(String valueString) {
+            return Utils.fromJson(valueString, Response.class);
+        }
+
     }
 
     <#if api.model??>
         <#list api.model?keys as class>
-    public class ${class} {
+    public static class ${class} {
             <#list api.model[class]?keys as parameter>
         public ${api.model[class][parameter]} ${parameter};
             </#list>
+
+        @Override
+        public String toString() {
+            return Utils.toJson(this);
+        }
+
+        public static ${class} valueOf(String valueString) {
+            return Utils.fromJson(valueString, ${class}.class);
+        }
+
     }
 
         </#list>
@@ -110,21 +137,22 @@ public class ${api.name} extends BaseRequest {
     // --------------------------------------------------------------------------------------------
 
     public ${api.name}() {
-        this.header = new HashMap<>();
-        this.hook = Utils.getHook(HOOK_NAME);
         this.request = new Request();
         this.responseType = ResponseType.${api.responseType};
+        <#list api.hookNameList as hookName>
+        hookNameList.add("${hookName}");
+        </#list>
     }
 
     public ${api.name} go(IHttpClient httpClient) {
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onRequestData(API_NAME, request, Request.class);
         }
         request.generateBody();
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onRequest(API_NAME, this, request, Request.class);
         }
         httpClient.request(this);
@@ -132,11 +160,11 @@ public class ${api.name} extends BaseRequest {
     }
 
     public ${api.name} go() {
-        return go(Utils.getMockHttpClient());
+        return go(HttpApiHelper.getInstance().getHttpClient(HTTP_CLIENT_NAME));
     }
 
-    private void generateResponseData(int statusCode, HttpMethod method, String url, Map<String, String> header,
-                                      File file) {
+    private void generateResponseData(int statusCode, HttpMethod method, String url,
+                                      Map<String, String> header, File file) {
         response = new Response(responseType, statusCode, method, url, header);
         response.setFileSavePath(fileSavePath);
         <#if api.responseType == "FILE">
@@ -150,8 +178,8 @@ public class ${api.name} extends BaseRequest {
         fillResponseHeader(header);
     }
 
-    private void generateResponseData(int statusCode, HttpMethod method, String url, Map<String, String> header,
-                                      byte[] data) {
+    private void generateResponseData(int statusCode, HttpMethod method, String url,
+                                      Map<String, String> header, byte[] data) {
         response = new Response(responseType, statusCode, method, url, header);
         <#if api.responseType == "BINARY">
             <#list api.response.body?keys as parameter>
@@ -167,8 +195,11 @@ public class ${api.name} extends BaseRequest {
     private void fillResponseHeader(Map<String, String> header) {
         <#if (api.response.header?size > 0)>
         if (header != null) {
+            String valueString = null;
             <#list api.response.header?keys as parameter>
-            response.${parameter} = header.get("${parameter}");
+            valueString = header.get("${parameter}");
+            <#assign type = api.response.header[parameter]/>
+            response.${parameter} = ${parsePrimaryTypeData(type, "valueString")};
             </#list>
         }
         </#if>
@@ -178,12 +209,10 @@ public class ${api.name} extends BaseRequest {
 
     public Request request;
     public Response response;
-    public IApiHook hook;
 
     private void generateResponseData(BaseResponse baseResponse) {
         try {
-            response = new GsonBuilder().serializeNulls().create()
-                    .fromJson(baseResponse.getBody(), Response.class);
+            response = Response.valueOf(baseResponse.getBody());
         } catch (Exception e) {
             e.printStackTrace();
             response = new Response(baseResponse);
@@ -195,11 +224,11 @@ public class ${api.name} extends BaseRequest {
     public final void onResponse(int statusCode, Map<String, String> header, String body) {
         BaseResponse baseResponse = new BaseResponse(responseType, statusCode, method, url, header);
         baseResponse.setBody(body);
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onResponse(API_NAME, responseType, baseResponse);
         }
         generateResponseData(baseResponse);
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onResponseData(API_NAME, responseType, response, Response.class);
         }
         onResponse(statusCode, response);
@@ -218,10 +247,11 @@ public class ${api.name} extends BaseRequest {
     }
 
     private void onResponse() {
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onResponse(API_NAME, responseType, response);
             hook.onResponseData(API_NAME, responseType, response, Response.class);
         }
+        clearHookList();
         onResponse(response.getStatusCode(), response);
     }
 

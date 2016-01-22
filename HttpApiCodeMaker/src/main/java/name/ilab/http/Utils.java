@@ -1,43 +1,19 @@
 package name.ilab.http;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Created by cuijfboy on 15/11/28.
  */
 public class Utils {
-
-    private static IHttpClient mockHttpClient;
-
-    public static synchronized IHttpClient getMockHttpClient() {
-        return mockHttpClient == null ? (mockHttpClient = new MockHttpClient()) : mockHttpClient;
-    }
-
-    private static Map<String, IApiHook> hookMap = new HashMap<>();
-    private static List<String> badHookList = new ArrayList<>();
-    private static final SimpleHook EMPTY_HOOK = new SimpleHook();
-
-    public static synchronized IApiHook getHook(String name) {
-        if (name == null || badHookList.contains(name)) {
-            return null;
-        }
-        IApiHook hook = hookMap.get(name);
-        if (hook == null) {
-            try {
-                hook = (IApiHook) Class.forName(name).newInstance();
-                hookMap.put(name, hook);
-            } catch (Exception e) {
-                e.printStackTrace();
-                badHookList.add(name);
-                hook = null;
-            }
-        }
-        return hook;
-    }
 
     public static String loadStringFromFile(File file) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -65,5 +41,14 @@ public class Utils {
             // Empty
         }
     }
+
+    public static String toJson(Object object) {
+        return new Gson().toJson(object);
+    }
+
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        return new GsonBuilder().serializeNulls().create().fromJson(json, clazz);
+    }
+
 
 }

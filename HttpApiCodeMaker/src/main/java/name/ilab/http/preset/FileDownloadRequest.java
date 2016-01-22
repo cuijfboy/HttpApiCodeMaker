@@ -1,24 +1,23 @@
 package name.ilab.http.preset;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import name.ilab.http.BaseRequest;
+import name.ilab.http.BaseResponse;
+import name.ilab.http.HttpApiHelper;
+import name.ilab.http.HttpMethod;
 import name.ilab.http.IApiHook;
 import name.ilab.http.IHttpClient;
 import name.ilab.http.ResponseType;
-import name.ilab.http.BaseRequest;
-import name.ilab.http.HttpMethod;
 import name.ilab.http.Utils;
-import name.ilab.http.BaseResponse;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 
 public class FileDownloadRequest extends BaseRequest {
     public static final String API_NAME =
             "name.ilab.http.preset.FileDownloadRequest";
-    public static final String HOOK_NAME = null;
+    public static final String HTTP_CLIENT_NAME =
+            "[DEFAULT_CLIENT]";
 
     public class Request {
 
@@ -32,11 +31,11 @@ public class FileDownloadRequest extends BaseRequest {
             if (url == null) {
                 url = "http://www.example.com/";
                 if (HttpMethod.GET == method) {
-                    StringBuffer sb = new StringBuffer(url);
-                    sb.append("?");
-                    sb.deleteCharAt(sb.length() - 1);
-                    if (sb.length() != url.length()) {
-                        url = sb.toString();
+                    StringBuffer stringBuffer = new StringBuffer(url);
+                    stringBuffer.append("?");
+                    stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+                    if (stringBuffer.length() != url.length()) {
+                        url = stringBuffer.toString();
                     }
                 }
             }
@@ -47,12 +46,20 @@ public class FileDownloadRequest extends BaseRequest {
 
         private void generateBody() {
             if (body == null) {
-                body = new Gson().toJson(this);
+                body = toString();
             }
         }
+
+        @Override
+        public String toString() {
+            return Utils.toJson(this);
+        }
+
     }
 
-    public class Response extends BaseResponse {
+    public static class Response extends BaseResponse {
+
+        public File file;
 
         public Response(BaseResponse response) {
             super(response);
@@ -63,14 +70,15 @@ public class FileDownloadRequest extends BaseRequest {
             super(responseType, statusCode, method, url, header);
         }
 
-        public File file;
+        public static Response valueOf(String valueString) {
+            return Utils.fromJson(valueString, Response.class);
+        }
+
     }
 
     // --------------------------------------------------------------------------------------------
 
     public FileDownloadRequest() {
-        this.header = new HashMap<>();
-        this.hook = Utils.getHook(HOOK_NAME);
         this.request = new Request();
         this.responseType = ResponseType.FILE;
     }
@@ -79,11 +87,11 @@ public class FileDownloadRequest extends BaseRequest {
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onRequestData(API_NAME, request, Request.class);
         }
         request.generateBody();
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onRequest(API_NAME, this, request, Request.class);
         }
         httpClient.request(this);
@@ -91,19 +99,19 @@ public class FileDownloadRequest extends BaseRequest {
     }
 
     public FileDownloadRequest go() {
-        return go(Utils.getMockHttpClient());
+        return go(HttpApiHelper.getInstance().getHttpClient(HTTP_CLIENT_NAME));
     }
 
-    private void generateResponseData(int statusCode, HttpMethod method, String url, Map<String, String> header,
-                                      File file) {
+    private void generateResponseData(int statusCode, HttpMethod method, String url,
+                                      Map<String, String> header, File file) {
         response = new Response(responseType, statusCode, method, url, header);
         response.setFileSavePath(fileSavePath);
         response.file = file;
         fillResponseHeader(header);
     }
 
-    private void generateResponseData(int statusCode, HttpMethod method, String url, Map<String, String> header,
-                                      byte[] data) {
+    private void generateResponseData(int statusCode, HttpMethod method, String url,
+                                      Map<String, String> header, byte[] data) {
         response = new Response(responseType, statusCode, method, url, header);
         fillResponseHeader(header);
     }
@@ -115,12 +123,10 @@ public class FileDownloadRequest extends BaseRequest {
 
     public Request request;
     public Response response;
-    public IApiHook hook;
 
     private void generateResponseData(BaseResponse baseResponse) {
         try {
-            response = new GsonBuilder().serializeNulls().create()
-                    .fromJson(baseResponse.getBody(), Response.class);
+            response = Response.valueOf(baseResponse.getBody());
         } catch (Exception e) {
             e.printStackTrace();
             response = new Response(baseResponse);
@@ -132,11 +138,11 @@ public class FileDownloadRequest extends BaseRequest {
     public final void onResponse(int statusCode, Map<String, String> header, String body) {
         BaseResponse baseResponse = new BaseResponse(responseType, statusCode, method, url, header);
         baseResponse.setBody(body);
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onResponse(API_NAME, responseType, baseResponse);
         }
         generateResponseData(baseResponse);
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onResponseData(API_NAME, responseType, response, Response.class);
         }
         onResponse(statusCode, response);
@@ -155,10 +161,11 @@ public class FileDownloadRequest extends BaseRequest {
     }
 
     private void onResponse() {
-        if (hook != null) {
+        for (IApiHook hook : obtainHookList()) {
             hook.onResponse(API_NAME, responseType, response);
             hook.onResponseData(API_NAME, responseType, response, Response.class);
         }
+        clearHookList();
         onResponse(response.getStatusCode(), response);
     }
 

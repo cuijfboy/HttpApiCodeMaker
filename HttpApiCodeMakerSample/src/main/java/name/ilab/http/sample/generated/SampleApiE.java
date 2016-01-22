@@ -13,23 +13,23 @@ import java.io.File;
 import java.util.Map;
 
 
-public class SampleApiA extends BaseRequest {
+public class SampleApiE extends BaseRequest {
     public static final String API_NAME =
-            "name.ilab.http.sample.generated.SampleApiA";
+            "name.ilab.http.sample.generated.SampleApiE";
     public static final String HTTP_CLIENT_NAME =
             "name.ilab.http.sample.SampleHttpClient";
 
     public class Request {
-        public transient String sampleApiARequestHeaderArg1;
-        public transient int sampleApiARequestHeaderArg2;
-        public transient SampleApiAModelA sampleApiARequestHeaderArg3;
+        public transient String sampleApiERequestHeaderArg1;
+        public transient String sampleApiERequestHeaderArg2;
         public transient int commonRequestHeaderArg2;
         public transient String commonRequestHeaderArg1;
-        public String sampleApiARequestBodyArg1;
-        public int sampleApiARequestBodyArg2;
-        public SampleApiAModelA sampleApiARequestBodyArg3;
+        public String sampleApiERequestBodyArg1;
+        public int sampleApiERequestBodyArg2;
         public String commonRequestBodyArg1;
         public int commonRequestBodyArg2;
+        public transient int sampleApiEUrlArg2;
+        public transient String sampleApiEUrlArg1;
 
         private void generateMethod() {
             if (method == null) {
@@ -39,16 +39,16 @@ public class SampleApiA extends BaseRequest {
 
         private void generateUrl() {
             if (url == null) {
-                url = "http://www.example.com/sampleApiA";
+                url = "http://www.example.com/sampleApiE/{sampleApiEUrlArg1}/{sampleApiEUrlArg2:int}";
+                url = url.replaceAll("\\{sampleApiEUrlArg2(:int)?\\}", String.valueOf(sampleApiEUrlArg2));
+                url = url.replaceAll("\\{sampleApiEUrlArg1(:String)?\\}", String.valueOf(sampleApiEUrlArg1));
                 if (HttpMethod.GET == method) {
                     StringBuffer stringBuffer = new StringBuffer(url);
                     stringBuffer.append("?");
-                    stringBuffer.append("sampleApiARequestBodyArg1").append("=")
-                            .append(sampleApiARequestBodyArg1).append("&");
-                    stringBuffer.append("sampleApiARequestBodyArg2").append("=")
-                            .append(sampleApiARequestBodyArg2).append("&");
-                    stringBuffer.append("sampleApiARequestBodyArg3").append("=")
-                            .append(sampleApiARequestBodyArg3).append("&");
+                    stringBuffer.append("sampleApiERequestBodyArg1").append("=")
+                            .append(sampleApiERequestBodyArg1).append("&");
+                    stringBuffer.append("sampleApiERequestBodyArg2").append("=")
+                            .append(sampleApiERequestBodyArg2).append("&");
                     stringBuffer.append("commonRequestBodyArg1").append("=")
                             .append(commonRequestBodyArg1).append("&");
                     stringBuffer.append("commonRequestBodyArg2").append("=")
@@ -63,9 +63,8 @@ public class SampleApiA extends BaseRequest {
 
         private void generateHeader() {
             if (header.isEmpty()) {
-                header.put("sampleApiARequestHeaderArg1", String.valueOf(sampleApiARequestHeaderArg1));
-                header.put("sampleApiARequestHeaderArg2", String.valueOf(sampleApiARequestHeaderArg2));
-                header.put("sampleApiARequestHeaderArg3", String.valueOf(sampleApiARequestHeaderArg3));
+                header.put("sampleApiERequestHeaderArg1", String.valueOf(sampleApiERequestHeaderArg1));
+                header.put("sampleApiERequestHeaderArg2", String.valueOf(sampleApiERequestHeaderArg2));
                 header.put("commonRequestHeaderArg2", String.valueOf(commonRequestHeaderArg2));
                 header.put("commonRequestHeaderArg1", String.valueOf(commonRequestHeaderArg1));
             }
@@ -86,14 +85,12 @@ public class SampleApiA extends BaseRequest {
 
     public static class Response extends BaseResponse {
 
-        public transient String sampleApiAResponseHeaderArg1;
-        public transient int sampleApiAResponseHeaderArg2;
-        public transient SampleApiAModelB sampleApiAResponseHeaderArg3;
+        public transient String sampleApiEResponseHeaderArg1;
+        public transient String sampleApiEResponseHeaderArg2;
         public transient int commonResponseHeaderArg2;
         public transient String commonResponseHeaderArg1;
-        public String sampleApiAResponseBodyArg1;
-        public int sampleApiAResponseBodyArg2;
-        public SampleApiAModelB sampleApiAResponseBodyArg3;
+        public String sampleApiEResponseBodyArg1;
+        public int sampleApiEResponseBodyArg2;
         public String commonResponseBodyArg1;
         public int commonResponseBodyArg2;
 
@@ -112,45 +109,15 @@ public class SampleApiA extends BaseRequest {
 
     }
 
-    public static class SampleApiAModelA {
-        public String sampleApiAModelAArg1;
-        public int sampleApiAModelAArg2;
-
-        @Override
-        public String toString() {
-            return Utils.toJson(this);
-        }
-
-        public static SampleApiAModelA valueOf(String valueString) {
-            return Utils.fromJson(valueString, SampleApiAModelA.class);
-        }
-
-    }
-
-    public static class SampleApiAModelB {
-        public String sampleApiAModelBArg1;
-        public int sampleApiAModelBArg2;
-
-        @Override
-        public String toString() {
-            return Utils.toJson(this);
-        }
-
-        public static SampleApiAModelB valueOf(String valueString) {
-            return Utils.fromJson(valueString, SampleApiAModelB.class);
-        }
-
-    }
-
     // --------------------------------------------------------------------------------------------
 
-    public SampleApiA() {
+    public SampleApiE() {
         this.request = new Request();
         this.responseType = ResponseType.TEXT;
         hookNameList.add("name.ilab.http.sample.SampleHook");
     }
 
-    public SampleApiA go(IHttpClient httpClient) {
+    public SampleApiE go(IHttpClient httpClient) {
         request.generateMethod();
         request.generateUrl();
         request.generateHeader();
@@ -165,7 +132,7 @@ public class SampleApiA extends BaseRequest {
         return this;
     }
 
-    public SampleApiA go() {
+    public SampleApiE go() {
         return go(HttpApiHelper.getInstance().getHttpClient(HTTP_CLIENT_NAME));
     }
 
@@ -185,12 +152,10 @@ public class SampleApiA extends BaseRequest {
     private void fillResponseHeader(Map<String, String> header) {
         if (header != null) {
             String valueString = null;
-            valueString = header.get("sampleApiAResponseHeaderArg1");
-            response.sampleApiAResponseHeaderArg1 = valueString;
-            valueString = header.get("sampleApiAResponseHeaderArg2");
-            response.sampleApiAResponseHeaderArg2 = valueString == null ? 0 : Integer.parseInt(valueString);
-            valueString = header.get("sampleApiAResponseHeaderArg3");
-            response.sampleApiAResponseHeaderArg3 = SampleApiAModelB.valueOf(valueString);
+            valueString = header.get("sampleApiEResponseHeaderArg1");
+            response.sampleApiEResponseHeaderArg1 = valueString;
+            valueString = header.get("sampleApiEResponseHeaderArg2");
+            response.sampleApiEResponseHeaderArg2 = valueString;
             valueString = header.get("commonResponseHeaderArg2");
             response.commonResponseHeaderArg2 = valueString == null ? 0 : Integer.parseInt(valueString);
             valueString = header.get("commonResponseHeaderArg1");
