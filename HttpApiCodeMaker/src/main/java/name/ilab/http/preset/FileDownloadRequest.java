@@ -19,7 +19,7 @@ public class FileDownloadRequest extends BaseRequest {
     public static final String HTTP_CLIENT_NAME =
             "[DEFAULT_CLIENT]";
 
-    public class Request {
+    public class Request extends BaseRequestModel {
 
         private void generateMethod() {
             if (method == null) {
@@ -57,7 +57,7 @@ public class FileDownloadRequest extends BaseRequest {
 
     }
 
-    public static class Response extends BaseResponse {
+    public static class Response extends BaseResponseModel {
 
         public File file;
 

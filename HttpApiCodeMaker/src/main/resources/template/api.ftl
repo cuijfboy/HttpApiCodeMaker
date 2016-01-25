@@ -26,12 +26,12 @@ public class ${api.name} extends BaseRequest {
     public static final String HTTP_CLIENT_NAME = null;
     </#if>
 
-    public class Request {
-        <#list api.request.header?keys as parameter>
-        public transient ${api.request.header[parameter]} ${parameter};
+    public class Request extends BaseRequestModel {
+        <#list api.requestParameterMap.header?keys as parameter>
+        public transient ${api.requestParameterMap.header[parameter]} ${parameter};
         </#list>
-        <#list api.request.body?keys as parameter>
-        public ${api.request.body[parameter]} ${parameter};
+        <#list api.requestParameterMap.body?keys as parameter>
+        public ${api.requestParameterMap.body[parameter]} ${parameter};
         </#list>
         <#list api.urlParameterMap?keys as parameter>
         public transient ${api.urlParameterMap[parameter]} ${parameter};
@@ -50,11 +50,10 @@ public class ${api.name} extends BaseRequest {
                 <#assign type = api.urlParameterMap[parameter]/>
                 url = url.replaceAll("\\{${parameter}(:${type})?\\}", String.valueOf(${parameter}));
                 </#list>
-                <#if api.method == 'GET'>
                 if (HttpMethod.GET == method) {
                     StringBuffer stringBuffer = new StringBuffer(url);
                     stringBuffer.append("?");
-                    <#list api.request.body?keys as parameter>
+                    <#list api.requestParameterMap.body?keys as parameter>
                     stringBuffer.append("${parameter}").append("=")
                             .append(${parameter}).append("&");
                     </#list>
@@ -63,14 +62,13 @@ public class ${api.name} extends BaseRequest {
                         url = stringBuffer.toString();
                     }
                 }
-                </#if>
             }
         }
 
         private void generateHeader() {
-            <#if (api.request.header?size > 0)>
+            <#if (api.requestParameterMap.header?size > 0)>
             if (header.isEmpty()) {
-                <#list api.request.header?keys as parameter>
+                <#list api.requestParameterMap.header?keys as parameter>
                 header.put("${parameter}", String.valueOf(${parameter}));
                 </#list>
             }
@@ -90,13 +88,13 @@ public class ${api.name} extends BaseRequest {
 
     }
 
-    public static class Response extends BaseResponse {
+    public static class Response extends BaseResponseModel {
 
-        <#list api.response.header?keys as parameter>
-        public transient ${api.response.header[parameter]} ${parameter};
+        <#list api.responseParameterMap.header?keys as parameter>
+        public transient ${api.responseParameterMap.header[parameter]} ${parameter};
         </#list>
-        <#list api.response.body?keys as parameter>
-        public ${api.response.body[parameter]} ${parameter};
+        <#list api.responseParameterMap.body?keys as parameter>
+        public ${api.responseParameterMap.body[parameter]} ${parameter};
         </#list>
 
         public Response(BaseResponse response) {
@@ -168,8 +166,8 @@ public class ${api.name} extends BaseRequest {
         response = new Response(responseType, statusCode, method, url, header);
         response.setFileSavePath(fileSavePath);
         <#if api.responseType == "FILE">
-            <#list api.response.body?keys as parameter>
-                <#if api.response.body[parameter] == "File">
+            <#list api.responseParameterMap.body?keys as parameter>
+                <#if api.responseParameterMap.body[parameter] == "File">
         response.${parameter} = file;
                 <#break>
                 </#if>
@@ -182,8 +180,8 @@ public class ${api.name} extends BaseRequest {
                                       Map<String, String> header, byte[] data) {
         response = new Response(responseType, statusCode, method, url, header);
         <#if api.responseType == "BINARY">
-            <#list api.response.body?keys as parameter>
-                <#if api.response.body[parameter] == "byte[]">
+            <#list api.responseParameterMap.body?keys as parameter>
+                <#if api.responseParameterMap.body[parameter] == "byte[]">
         response.${parameter} = data;
                 <#break>
                 </#if>
@@ -193,12 +191,12 @@ public class ${api.name} extends BaseRequest {
     }
 
     private void fillResponseHeader(Map<String, String> header) {
-        <#if (api.response.header?size > 0)>
+        <#if (api.responseParameterMap.header?size > 0)>
         if (header != null) {
             String valueString = null;
-            <#list api.response.header?keys as parameter>
+            <#list api.responseParameterMap.header?keys as parameter>
             valueString = header.get("${parameter}");
-            <#assign type = api.response.header[parameter]/>
+            <#assign type = api.responseParameterMap.header[parameter]/>
             response.${parameter} = ${parsePrimaryTypeData(type, "valueString")};
             </#list>
         }

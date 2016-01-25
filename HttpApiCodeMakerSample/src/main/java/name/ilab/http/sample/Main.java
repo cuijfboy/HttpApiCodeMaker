@@ -3,7 +3,7 @@ package name.ilab.http.sample;
 
 import name.ilab.http.maker.HttpApiCode;
 import name.ilab.http.maker.HttpApiCodeMaker;
-import name.ilab.http.sample.generated.SampleApiE;
+//import name.ilab.http.sample.generated.SampleApiE;
 
 import java.io.File;
 
@@ -24,13 +24,13 @@ public class Main {
     }
 
     private static void invokeHttpApiCode() {
-        new SampleApiE() {
-            {
-                request.sampleApiEUrlArg1 = "1111111111111";
-                request.sampleApiEUrlArg2 = 22222222;
-            }
-
-        }.go();
+//        new SampleApiE() {
+//            {
+//                request.sampleApiEUrlArg1 = "1111111111111";
+//                request.sampleApiEUrlArg2 = 22222222;
+//            }
+//
+//        }.go();
 
 //        new SampleApiA() {
 //            {

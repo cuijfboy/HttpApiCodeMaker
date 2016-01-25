@@ -14,6 +14,13 @@ import java.util.regex.Pattern;
  */
 public class HttpApi {
 
+    public static final String BASE_REQUEST = "BaseRequest";
+    public static final String BASE_RESPONSE = "BaseResponse";
+    public static final String BASE_REQUEST_MODEL = "BaseRequestModel";
+    public static final String BASE_RESPONSE_MODEL = "BaseResponseModel";
+    public static final String HEADER = "header";
+    public static final String BODY = "body";
+
     // local
     private String name;
 
@@ -27,18 +34,20 @@ public class HttpApi {
     private String url;
 
     // global
-    private String urlBase;
+    private String baseUrl;
 
     // auto
     private transient Map<String, String> urlParameterMap;
 
     // local & global
     // Map< "head" or "body", Map< fieldName, fieldClassName >>
-    private Map<String, Map<String, String>> request;
+    @SerializedName("request")
+    private Map<String, Map<String, String>> requestParameterMap;
 
     // local & global
     // Map< "head" or "body", < fieldName, fieldClassName >>
-    private Map<String, Map<String, String>> response;
+    @SerializedName("response")
+    private Map<String, Map<String, String>> responseParameterMap;
 
     // local & global
     @SerializedName("package")
@@ -67,25 +76,39 @@ public class HttpApi {
     @SerializedName("client")
     private String clientName;
 
+    // auto
+    private String parentClass;
+
     public void prepare() {
-        request = request == null ? new HashMap<String, Map<String, String>>() : request;
-        response = response == null ? new HashMap<String, Map<String, String>>() : response;
+        requestParameterMap = requestParameterMap == null ? new HashMap<String, Map<String, String>>() : requestParameterMap;
+        prepareParameterMap(requestParameterMap);
+        responseParameterMap = responseParameterMap == null ? new HashMap<String, Map<String, String>>() : responseParameterMap;
+        prepareParameterMap(responseParameterMap);
         importList = importList == null ? new ArrayList<String>() : importList;
         hookNameList = hookNameList == null ? new ArrayList<String>() : hookNameList;
         model = model == null ? new HashMap<String, Map<String, String>>() : model;
         urlParameterMap = new HashMap<>();
     }
 
+    public static void prepareParameterMap(Map<String, Map<String, String>> parameterMap) {
+        prepareParameterMap(HEADER, parameterMap);
+        prepareParameterMap(BODY, parameterMap);
+    }
+
+    public static void prepareParameterMap(String key, Map<String, Map<String, String>> parameterMap) {
+        if (parameterMap.get(key) == null) {
+            parameterMap.put(key, new HashMap<String, String>());
+        }
+    }
+
     public void merge(String name, HttpApi that) {
         this.name = name == null ? this.name : name;
         this.method = this.method == null ? that.method : this.method;
         if (this.fullUrl == null) {
-            this.urlBase = this.urlBase == null ? that.urlBase : this.urlBase;
+            this.baseUrl = this.baseUrl == null ? that.baseUrl : this.baseUrl;
             this.url = this.url == null ? that.url : this.url;
-            this.fullUrl = this.urlBase + this.url;
+            this.fullUrl = this.baseUrl + this.url;
         }
-        mergeParameterMap(this.request, that.request);
-        mergeParameterMap(this.response, that.response);
         this.packageName = this.packageName == null ? that.packageName : this.packageName;
         mergeList(this.hookNameList, that.hookNameList);
         mergeList(this.importList, that.importList);
@@ -105,7 +128,7 @@ public class HttpApi {
 
     private void generateResponseType() {
         responseType = ResponseType.TEXT;
-        Map<String, String> bodyMap = response.get("body");
+        Map<String, String> bodyMap = responseParameterMap.get(BODY);
         if (bodyMap == null || bodyMap.size() != 1) {
             return;
         }
@@ -123,60 +146,6 @@ public class HttpApi {
             String name = matcher.group(1);
             String type = matcher.group(3);
             urlParameterMap.put(name, type == null ? "String" : type);
-        }
-    }
-
-    private void mergeParameterMap(Map<String, Map<String, String>> thisMap,
-                                   Map<String, Map<String, String>> thatMap) {
-        mergeParameterSubMap(getMapFromMap(thisMap, "header"), thatMap.get("header"));
-        mergeParameterSubMap(getMapFromMap(thisMap, "body"), thatMap.get("body"));
-    }
-
-    private Map<String, String> getMapFromMap(Map<String, Map<String, String>> map, String key) {
-        Map<String, String> value = map.get(key);
-        if (value == null) {
-            value = new HashMap<>();
-            map.put(key, value);
-        }
-        return value;
-    }
-
-    private void mergeParameterSubMap(Map<String, String> thisMap,
-                                      Map<String, String> thatMap) {
-        if (thisMap == null) {
-            thisMap = new HashMap<>();
-            if (thatMap == null) {
-                return;
-            } else {
-                addExtraParameter(thisMap, thatMap);
-            }
-        } else {
-            if (thatMap == null) {
-                removeUnnecessaryParameter(thisMap);
-            } else {
-                addExtraParameter(thisMap, thatMap);
-                removeUnnecessaryParameter(thisMap);
-            }
-        }
-    }
-
-    private void addExtraParameter(Map<String, String> thisMap,
-                                   Map<String, String> thatMap) {
-        Set<String> diffKeySet = new HashSet<>();
-        diffKeySet.addAll(thatMap.keySet());
-        diffKeySet.removeAll(thisMap.keySet());
-        for (String key : diffKeySet) {
-            thisMap.put(key, thatMap.get(key));
-        }
-    }
-
-    private void removeUnnecessaryParameter(Map<String, String> map) {
-        Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, String> entry = iterator.next();
-            if (entry.getValue() == null) {
-                iterator.remove();
-            }
         }
     }
 
@@ -221,28 +190,36 @@ public class HttpApi {
         this.url = url;
     }
 
-    public String getUrlBase() {
-        return urlBase;
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
-    public void setUrlBase(String urlBase) {
-        this.urlBase = urlBase;
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
-    public Map<String, Map<String, String>> getRequest() {
-        return request;
+    public Map<String, String> getUrlParameterMap() {
+        return urlParameterMap;
     }
 
-    public void setRequest(Map<String, Map<String, String>> request) {
-        this.request = request;
+    public void setUrlParameterMap(Map<String, String> urlParameterMap) {
+        this.urlParameterMap = urlParameterMap;
     }
 
-    public Map<String, Map<String, String>> getResponse() {
-        return response;
+    public Map<String, Map<String, String>> getRequestParameterMap() {
+        return requestParameterMap;
     }
 
-    public void setResponse(Map<String, Map<String, String>> response) {
-        this.response = response;
+    public void setRequestParameterMap(Map<String, Map<String, String>> requestParameterMap) {
+        this.requestParameterMap = requestParameterMap;
+    }
+
+    public Map<String, Map<String, String>> getResponseParameterMap() {
+        return responseParameterMap;
+    }
+
+    public void setResponseParameterMap(Map<String, Map<String, String>> responseParameterMap) {
+        this.responseParameterMap = responseParameterMap;
     }
 
     public String getPackageName() {
@@ -301,12 +278,12 @@ public class HttpApi {
         this.clientName = clientName;
     }
 
-    public Map<String, String> getUrlParameterMap() {
-        return urlParameterMap;
+    public String getParentClass() {
+        return parentClass;
     }
 
-    public void setUrlParameterMap(Map<String, String> urlParameterMap) {
-        this.urlParameterMap = urlParameterMap;
+    public void setParentClass(String parentClass) {
+        this.parentClass = parentClass;
     }
 
     @Override
@@ -316,9 +293,9 @@ public class HttpApi {
                 ", method=" + method +
                 ", fullUrl='" + fullUrl + '\'' +
                 ", url='" + url + '\'' +
-                ", urlBase='" + urlBase + '\'' +
-                ", request=" + request +
-                ", response=" + response +
+                ", baseUrl='" + baseUrl + '\'' +
+                ", requestParameterMap=" + requestParameterMap +
+                ", responseParameterMap=" + responseParameterMap +
                 ", packageName='" + packageName + '\'' +
                 ", hookNameList=" + hookNameList +
                 ", importList=" + importList +
