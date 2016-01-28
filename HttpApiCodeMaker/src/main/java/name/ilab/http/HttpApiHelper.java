@@ -1,5 +1,8 @@
 package name.ilab.http;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,6 +107,18 @@ public class HttpApiHelper {
             hookMap.remove(name);
             badHookList.remove(name);
         }
+    }
+
+    public static String toJson(Object object) {
+        return new Gson().toJson(object);
+    }
+
+    public static String toPrettyJson(Object object) {
+        return new GsonBuilder().setPrettyPrinting().serializeNulls().create().toJson(object);
+    }
+
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        return new GsonBuilder().serializeNulls().create().fromJson(json, clazz);
     }
 
 }

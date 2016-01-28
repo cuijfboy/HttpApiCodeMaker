@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Created by cuijfboy on 16/1/9.
  */
-public class BaseResponse {
+public class HttpResponse {
     private ResponseType responseType;
     private int statusCode;
     private HttpMethod method;
@@ -14,14 +14,14 @@ public class BaseResponse {
     private String body;
     private String fileSavePath;
 
-    public BaseResponse() {
+    public HttpResponse() {
     }
 
-    public BaseResponse(BaseResponse response) {
+    public HttpResponse(HttpResponse response) {
         set(response);
     }
 
-    public BaseResponse(ResponseType responseType,
+    public HttpResponse(ResponseType responseType,
                         int statusCode, HttpMethod method, String url, Map<String, String> header) {
         this.responseType = responseType;
         this.statusCode = statusCode;
@@ -30,7 +30,7 @@ public class BaseResponse {
         this.header = header;
     }
 
-    public void set(BaseResponse response) {
+    public void set(HttpResponse response) {
         this.responseType = response.responseType;
         this.statusCode = response.statusCode;
         this.method = response.method;
@@ -98,7 +98,7 @@ public class BaseResponse {
 
     @Override
     public String toString() {
-        return "BaseResponse{" +
+        return "HttpResponse{" +
                 "responseType=" + responseType +
                 ", method=" + method +
                 ", url='" + url + '\'' +

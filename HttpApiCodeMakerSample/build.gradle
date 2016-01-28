@@ -14,3 +14,7 @@ dependencies {
     compile "org.freemarker:freemarker:2.3.23"
     compile files("./../http-api-code-maker-0.5.0.jar")
 }
+
+task cleanGeneratedCode << {
+    delete './src/main/java/name/ilab/http/sample/generated'
+}

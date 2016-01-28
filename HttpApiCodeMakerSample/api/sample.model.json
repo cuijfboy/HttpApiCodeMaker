@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "name": "model",
+    "version": "1.0.0"
+  },
+  "global": {
+    "source": "./src/main/java/",
+    "package": "name.ilab.http.sample.generated",
+    "import": [
+      "List",
+      "Map"
+    ],
+    "header": {
+      "commonModelHeaderArg1": "String",
+      "commonModelHeaderArg2": "int"
+    },
+    "body": {
+      "commonModelBodyArg1": "String",
+      "commonModelBodyArg2": "int"
+    }
+  },
+  "local": {
+    "SampleRequestModelA": {
+      "import": [
+        "Set"
+      ],
+      "header": {
+        "sampleRequestModelAHeaderArg1": "String",
+        "sampleRequestModelAHeaderArg2": "int"
+      },
+      "body": {
+        "sampleRequestModelABodyArg1": "String",
+        "sampleRequestModelABodyArg2": "int"
+      }
+    },
+    "SampleResponseModelA": {
+      "extends": "HttpResponse",
+      "header": {
+        "sampleResponseModelAHeaderArg1": "String",
+        "sampleResponseModelAHeaderArg2": "int"
+      },
+      "body": {
+        "sampleResponseModelABodyArg1": "String",
+        "sampleResponseModelABodyArg2": "int"
+      }
+    },
+    "SampleModelA": {
+      "header": {
+        "sampleModelAHeaderArg1": "String",
+        "sampleModelAHeaderArg2": "int"
+      },
+      "body": {
+        "sampleModelABodyArg1": "String",
+        "sampleModelABodyArg2": "int"
+      }
+    },
+    "SampleModelB": {
+      "header": {
+        "sampleModelBHeaderArg1": "String",
+        "sampleModelBHeaderArg2": "int"
+      },
+      "body": {
+        "sampleModelBBodyArg1": "String",
+        "sampleModelBBodyArg2": "int"
+      }
+    }
+  }
+}

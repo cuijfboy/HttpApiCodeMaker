@@ -1,7 +1,11 @@
 {
+  "meta": {
+    "name": "api",
+    "version": "1.0.0"
+  },
   "global": {
-    "package": "name.ilab.http.preset",
-    "output": "./src/main/java/name/ilab/http/preset/"
+    "source": "./src/main/java/",
+    "package": "name.ilab.http.preset"
   },
   "local": {
     "FileDownloadRequest": {

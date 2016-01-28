@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "name": "api",
+    "version": "1.0.0"
+  },
+  "global": {
+    "source": "<sourceFolderPath>",
+    "package": "<packageName>",
+    "import": [
+      "<importClassName1>",
+      "<importClassName2>"
+    ],
+    "method": "<methodName>",
+    "baseUrl": "<baseUrl>",
+    "request": {
+      "extends": "<parentClassName>",
+      "header": {
+        "<requestHeader1Name>": "<requestHeader1TypeName>",
+        "<requestHeader2Name>": "<requestHeader2TypeName>"
+      },
+      "body": {
+        "<requestBody1Name>": "<requestBody1TypeName>",
+        "<requestBody2Name>": "<requestBody2TypeName>"
+      }
+    },
+    "response": {
+      "extends": "<parentClassName>",
+      "header": {
+        "<responseHeader1Name>": "<responseHeader1TypeName>",
+        "<responseHeader2Name>": "<responseHeader2TypeName>"
+      },
+      "body": {
+        "<responseBody1Name>": "<responseBody1TypeName>",
+        "<responseBody2Name>": "<responseBody2TypeName>"
+      }
+    },
+    "hook": [
+      "<hook1ClassName>",
+      "<hook2ClassName>"
+    ],
+    "client": "<clientName>"
+  },
+  "local": {
+    "<className>": {
+      "source": "<sourceFolderPath>",
+      "package": "<packageName>",
+      "import": [
+        "<importClassName1>",
+        "<importClassName2>"
+      ],
+      "method": "<methodName>",
+      "url": "<url>",
+      "fullUrl": "<fullUrl>",
+      "request": {
+        "extends": "<parentClassName>",
+        "header": {
+          "<requestHeader1Name>": "<requestHeader1TypeName>",
+          "<requestHeader2Name>": "<requestHeader2TypeName>"
+        },
+        "body": {
+          "<requestBody1Name>": "<requestBody1TypeName>",
+          "<requestBody2Name>": "<requestBody2TypeName>"
+        }
+      },
+      "response": {
+        "extends": "<parentClassName>",
+        "header": {
+          "<responseHeader1Name>": "<responseHeader1TypeName>",
+          "<responseHeader2Name>": "<responseHeader2TypeName>"
+        },
+        "body": {
+          "<responseBody1Name>": "<responseBody1TypeName>",
+          "<responseBody2Name>": "<responseBody2TypeName>"
+        }
+      },
+      "hook": [
+        "<hook1ClassName>",
+        "<hook2ClassName>"
+      ],
+      "client": "<clientName>"
+    }
+  }
+}

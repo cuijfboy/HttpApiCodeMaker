@@ -11,17 +11,17 @@ public class SimpleHook implements IApiHook {
     }
 
     @Override
-    public void onRequest(String apiName, BaseRequest request, Object data, Class dataClass) {
+    public void onRequest(String apiName, HttpRequest request, Object data, Class dataClass) {
 
     }
 
     @Override
-    public void onResponse(String apiName, ResponseType type, BaseResponse response) {
+    public void onResponse(String apiName, ResponseType type, HttpResponse response) {
 
     }
 
     @Override
-    public void onResponseData(String apiName, ResponseType type, BaseResponse data, Class dataClass) {
+    public void onResponseData(String apiName, ResponseType type, HttpResponse data, Class dataClass) {
 
     }
 }

@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "name": "class",
+    "version": "1.0.0"
+  },
+  "global": {
+    "source": "<sourceFolderPath>",
+    "package": "<packageName>",
+    "import": [
+      "<importClassName1>",
+      "<importClassName2>"
+    ],
+    "extends": "<parentClassName>",
+    "implements": [
+      "<interfaceClassName1>",
+      "<interfaceClassName2>"
+    ],
+    "filed": {
+      "<field1Name>": "<field1TypeName>",
+      "<field2Name>": "<field2TypeName>"
+    },
+    "transient": {
+      "<field1Name>": "<field1TypeName>",
+      "<field2Name>": "<field2TypeName>"
+    },
+    "inner": {
+      "<innerClass1>": {
+        "static": true,
+        "extends": "<parentClassName>",
+        "implements": [
+          "<interfaceClassName1>",
+          "<interfaceClassName2>"
+        ],
+        "filed": {
+          "<field1Name>": "<field1TypeName>",
+          "<field2Name>": "<field2TypeName>"
+        },
+        "transient": {
+          "<field1Name>": "<field1TypeName>",
+          "<field2Name>": "<field2TypeName>"
+        }
+      }
+    }
+  },
+  "local": {
+    "<className>": {
+      "source": "<sourceFolderPath>",
+      "package": "<packageName>",
+      "import": [
+        "<importClassName1>",
+        "<importClassName2>"
+      ],
+      "extends": "<parentClassName>",
+      "implements": [
+        "<interfaceClassName1>",
+        "<interfaceClassName2>"
+      ],
+      "filed": {
+        "<field1Name>": "<field1TypeName>",
+        "<field2Name>": "<field2TypeName>"
+      },
+      "inner": {
+        "<innerClass1>": {
+          "static": false,
+          "extends": "<parentClassName>",
+          "implements": [
+            "<interfaceClassName1>",
+            "<interfaceClassName2>"
+          ],
+          "filed": {
+            "<field1Name>": "<field1TypeName>",
+            "<field2Name>": "<field2TypeName>"
+          },
+          "transient": {
+            "<field1Name>": "<field1TypeName>",
+            "<field2Name>": "<field2TypeName>"
+          }
+        }
+      }
+    }
+  }
+}

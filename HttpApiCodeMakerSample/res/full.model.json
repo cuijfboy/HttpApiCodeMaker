@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "name": "model",
+    "version": "1.0.0"
+  },
+  "global": {
+    "source": "<sourceFolderPath>",
+    "package": "<packageName>",
+    "import": [
+      "<importClassName1>",
+      "<importClassName2>"
+    ],
+    "extends": "<parentClassName>",
+    "implements": [
+      "<interfaceClassName1>",
+      "<interfaceClassName2>"
+    ],
+    "header": {
+      "<modelHeader1Name>": "<modelHeader1TypeName>",
+      "<modelHeader2Name>": "<modelHeader2TypeName>"
+    },
+    "body": {
+      "<modelBody1Name>": "<modelBody1TypeName>",
+      "<modelBody2Name>": "<modelBody2TypeName>"
+    }
+  },
+  "local": {
+    "<className>": {
+      "source": "<sourceFolderPath>",
+      "package": "<packageName>",
+      "import": [
+        "<importClassName1>",
+        "<importClassName2>"
+      ],
+      "extends": "<parentClassName>",
+      "implements": [
+        "<interfaceClassName1>",
+        "<interfaceClassName2>"
+      ],
+      "header": {
+        "<modelHeader1Name>": "<modelHeader1TypeName>",
+        "<modelHeader2Name>": "<modelHeader2TypeName>"
+      },
+      "body": {
+        "<modelBody1Name>": "<modelBody1TypeName>",
+        "<modelBody2Name>": "<modelBody2TypeName>"
+      }
+    }
+  }
+}

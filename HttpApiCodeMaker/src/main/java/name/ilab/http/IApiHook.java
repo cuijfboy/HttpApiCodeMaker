@@ -7,10 +7,10 @@ public interface IApiHook {
 
     void onRequestData(final String apiName, final Object data, final Class dataClass);
 
-    void onRequest(final String apiName, final BaseRequest request, final Object data, final Class dataClass);
+    void onRequest(final String apiName, final HttpRequest request, final Object data, final Class dataClass);
 
-    void onResponse(final String apiName, final ResponseType type, final BaseResponse response);
+    void onResponse(final String apiName, final ResponseType type, final HttpResponse response);
 
-    void onResponseData(final String apiName, final ResponseType type, final BaseResponse data, final Class dataClass);
+    void onResponseData(final String apiName, final ResponseType type, final HttpResponse data, final Class dataClass);
 
 }

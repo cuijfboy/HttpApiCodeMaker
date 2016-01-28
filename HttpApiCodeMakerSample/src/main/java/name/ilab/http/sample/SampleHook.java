@@ -14,7 +14,7 @@ public class SampleHook extends SimpleHook {
     }
 
     @Override
-    public void onRequest(String apiName, BaseRequest request, Object data, Class dataClass) {
+    public void onRequest(String apiName, HttpRequest request, Object data, Class dataClass) {
         System.out.println();
         System.out.println("SampleHook onRequest name = " + apiName);
         System.out.println("SampleHook onRequest method = " + request.getMethod());
@@ -42,7 +42,7 @@ public class SampleHook extends SimpleHook {
     }
 
     @Override
-    public void onResponse(String apiName, ResponseType type, BaseResponse response) {
+    public void onResponse(String apiName, ResponseType type, HttpResponse response) {
         System.out.println();
         System.out.println("SampleHook onResponse name = " + apiName);
         System.out.println("SampleHook onResponse method = " + response.getMethod());
@@ -53,7 +53,7 @@ public class SampleHook extends SimpleHook {
     }
 
     @Override
-    public void onResponseData(String apiName, ResponseType type, BaseResponse data, Class dataClass) {
+    public void onResponseData(String apiName, ResponseType type, HttpResponse data, Class dataClass) {
         System.out.println();
         System.out.println("SampleHook onResponseData data = " + data);
         System.out.println("SampleHook onResponseData dataClass = " + dataClass);
