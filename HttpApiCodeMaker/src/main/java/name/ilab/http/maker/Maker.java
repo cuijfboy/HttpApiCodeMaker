@@ -32,29 +32,28 @@ public class Maker {
     }
 
     private Maker() {
-        System.out.println();
+        Maker.logInfo();
         Configuration freeMarkerConfig = new Configuration(Configuration.VERSION_2_3_23);
         freeMarkerConfig.setDefaultEncoding("UTF-8");
         try {
             freeMarkerConfig.setClassForTemplateLoading(getClass(), TEMPLATE_FOLDER);
             apiTemplate = freeMarkerConfig.getTemplate(HTTP_API_TEMPLATE_NAME);
-            System.out.println("[HttpApiCodeMaker] apiTemplate loaded : "
+            Maker.logInfo("apiTemplate loaded : "
                     + apiTemplate.getName());
             modelTemplate = freeMarkerConfig.getTemplate(HTTP_API_GLOBAL_MODEL_TEMPLATE_NAME);
-            System.out.println("[HttpApiCodeMaker] modelTemplate loaded : "
+            Maker.logInfo("modelTemplate loaded : "
                     + modelTemplate.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
         registerHttpQuickClass();
-        System.out.println();
-        System.out.println("[HttpApiCodeMaker] initialized !");
+        Maker.logInfo();
+        Maker.logInfo("initialized !");
     }
 
     private void registerHttpQuickClass() {
         AbstractClazz.registerQuickClass("HttpRequest", "name.ilab.http.HttpRequest");
         AbstractClazz.registerQuickClass("HttpResponse", "name.ilab.http.HttpResponse");
-
     }
 
     public void makeCode(List<File> fileList) {
@@ -122,44 +121,44 @@ public class Maker {
     }
 
     public void makeApiCode(String json) {
-        System.out.println();
-        System.out.println("[HttpApiCodeMaker] loading ApiSet data ...");
+        Maker.logInfo();
+        Maker.logInfo("loading ApiSet data ...");
         ApiSet apiSet = new GsonBuilder().serializeNulls().create().fromJson(json, ApiSet.class);
         apiSet.refresh();
-        System.out.println();
-        System.out.println("[HttpApiCodeMaker] ApiSet data loaded !");
+        Maker.logInfo();
+        Maker.logInfo("ApiSet data loaded !");
 
         for (Api api : apiSet.getLocal().values()) {
-            System.out.println();
-            System.out.println("[HttpApiCodeMaker] generating API : \n " + api);
+            Maker.logInfo();
+            Maker.logInfo("generating API : \n " + api);
             makeCodeFile(api, apiTemplate);
         }
-        System.out.println();
-        System.out.println("[HttpApiCodeMaker] generated " + apiSet.getLocal().size() + " code file(s).");
+        Maker.logInfo();
+        Maker.logInfo("generated " + apiSet.getLocal().size() + " code file(s).");
     }
 
     public void makeModelCode(String json) {
-        System.out.println();
-        System.out.println("[HttpApiCodeMaker] loading ModelSet data ...");
+        Maker.logInfo();
+        Maker.logInfo("loading ModelSet data ...");
         ModelSet modelSet = new GsonBuilder().serializeNulls().create().fromJson(json, ModelSet.class);
         modelSet.refresh();
-        System.out.println();
-        System.out.println("[HttpApiCodeMaker] ModelSet data loaded !");
+        Maker.logInfo();
+        Maker.logInfo("ModelSet data loaded !");
 
         for (Model model : modelSet.getLocal().values()) {
-            System.out.println();
-            System.out.println("[HttpApiCodeMaker] generating Model : \n " + model);
+            Maker.logInfo();
+            Maker.logInfo("generating Model : \n " + model);
             makeCodeFile(model, modelTemplate);
         }
-        System.out.println();
-        System.out.println("[HttpApiCodeMaker] generated " + modelSet.getLocal().size() + " code file(s).");
+        Maker.logInfo();
+        Maker.logInfo("generated " + modelSet.getLocal().size() + " code file(s).");
     }
 
     private void makeCodeFile(Clazz clazz, Template template) {
         File outputFolder = new File(clazz.getSourceFolder() + File.separator +
                 clazz.getPackageName().replaceAll("\\.", File.separator));
         if (!outputFolder.exists()) {
-            System.out.println("[HttpApiCodeMaker] create output folder : " + outputFolder.getAbsolutePath());
+            Maker.logInfo("create output folder : " + outputFolder.getAbsolutePath());
             outputFolder.mkdirs();
         }
         String codeFilePath = outputFolder.getAbsolutePath() + File.separator + clazz.getName() + ".java";
@@ -169,7 +168,7 @@ public class Maker {
         try {
             Writer writer = new OutputStreamWriter(new FileOutputStream(codeFilePath));
             template.process(root, writer);
-            System.out.println("[HttpApiCodeMaker] " + clazz.getName() + " generated as " + codeFilePath);
+            Maker.logInfo("" + clazz.getName() + " generated as " + codeFilePath);
         } catch (TemplateException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -214,5 +213,17 @@ public class Maker {
 
     public static boolean isModelJsonFile(File file) {
         return file.getName().toLowerCase().endsWith(MODEL_JSON_FILE_SUFFIX);
+    }
+
+    public static void logInfo(String msg) {
+        System.out.println("[HttpApiCodeMaker] " + msg);
+    }
+
+    public static void logInfo() {
+        System.out.println();
+    }
+
+    public static void logError(String msg) {
+        System.err.println("[HttpApiCodeMaker] " + msg);
     }
 }

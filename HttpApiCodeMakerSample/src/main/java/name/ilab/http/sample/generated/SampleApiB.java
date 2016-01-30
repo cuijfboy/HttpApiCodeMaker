@@ -5,23 +5,22 @@
 
 ******************************** CONFIGURATION ********************************
 
-"SampleApiB": {
+"SampleApiB": "SampleApiB": {
   "method": "GET",
   "fullUrl": "http://www.example.com/sampleB",
   "url": "sampleB",
   "baseUrl": "http://www.example.com/",
   "request": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpRequest",
     "extends": "SampleRequestModelA",
     "implements": [],
-    "filed": {
+    "body": {
       "sampleApiBRequestBodyArg1": "String",
       "sampleApiBRequestBodyArg2": "int",
       "commonRequestBodyArg2": "int"
     },
-    "transient": {
+    "header": {
       "sampleApiBRequestHeaderArg1": "String",
       "sampleApiBRequestHeaderArg2": "int",
       "commonRequestHeaderArg2": "int"
@@ -29,16 +28,15 @@
   },
   "response": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpResponse",
     "extends": "SampleResponseModelA",
     "implements": [],
-    "filed": {
+    "body": {
       "sampleApiBResponseBodyArg1": "String",
       "sampleApiBResponseBodyArg2": "int",
       "commonResponseBodyArg1": "String"
     },
-    "transient": {
+    "header": {
       "sampleApiBResponseHeaderArg1": "String",
       "sampleApiBResponseHeaderArg2": "int",
       "commonResponseHeaderArg2": "int"
@@ -60,8 +58,8 @@
   "name": "SampleApiB",
   "extends": null,
   "implements": [],
-  "filed": {},
-  "transient": {}
+  "body": {},
+  "header": {}
 }
 
 ******************************************************************************/
@@ -114,7 +112,7 @@ public class SampleApiB extends HttpRequest {
         private void generateUrl() {
             if (url == null) {
                 url = "http://www.example.com/sampleB";
-                if (HttpMethod.GET == method) {
+                if (HttpMethod.GET == method || HttpMethod.DELETE == method) {
                     StringBuffer stringBuffer = new StringBuffer(url);
                     stringBuffer.append("?");
                     stringBuffer.append("sampleApiBRequestBodyArg1").append("=")

@@ -1,5 +1,7 @@
 package name.ilab.http.maker.model;
 
+import name.ilab.http.maker.Maker;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,17 +14,17 @@ public class ModelSet {
     public Map<String, Model> local = new HashMap<>();
 
     public void refresh() {
-        System.out.println("[HttpApiCodeMaker] ModelSet : meta : " + meta);
-        System.out.println();
-        System.out.println("[HttpApiCodeMaker] Model : global : \n " + global);
+        Maker.logInfo("ModelSet : meta : " + meta);
+        Maker.logInfo();
+        Maker.logInfo("Model : global : \n " + global);
         global.prepare();
         for (Map.Entry<String, Model> entry : local.entrySet()) {
-            System.out.println();
-            System.out.println("[HttpApiCodeMaker] Model : " + entry.getKey() + " [Original] : \n " + entry.getValue());
+            Maker.logInfo();
+            Maker.logInfo("Model : " + entry.getKey() + " [Original] : \n " + entry.getValue());
             entry.getValue().prepare();
             entry.getValue().merge(entry.getKey(), global);
             entry.getValue().refresh();
-            System.out.println("[HttpApiCodeMaker] Model : " + entry.getKey() + " [Refreshed] : \n " + entry.getValue());
+            Maker.logInfo("Model : " + entry.getKey() + " [Refreshed] : \n " + entry.getValue());
         }
     }
 

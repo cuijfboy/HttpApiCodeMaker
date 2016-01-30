@@ -113,12 +113,16 @@ public class HttpApiHelper {
         return new Gson().toJson(object);
     }
 
-    public static String toPrettyJson(Object object) {
-        return new GsonBuilder().setPrettyPrinting().serializeNulls().create().toJson(object);
-    }
-
     public static <T> T fromJson(String json, Class<T> clazz) {
         return new GsonBuilder().serializeNulls().create().fromJson(json, clazz);
+    }
+
+    public static String generateConfiguration(String name, Object object) {
+        String configuration = "\"" + name + "\": " +
+                new GsonBuilder().setPrettyPrinting().serializeNulls().create().toJson(object);
+        configuration = configuration.replaceAll("\"filed\": ", "\"body\": ");
+        configuration = configuration.replaceAll("\"transient\": ", "\"header\": ");
+        return configuration;
     }
 
 }

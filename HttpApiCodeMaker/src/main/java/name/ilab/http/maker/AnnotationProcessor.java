@@ -79,7 +79,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                             if (subFile.exists() && subFile.isFile() && Maker.isSupportedJsonFile(subFile)) {
                                 fileList.add(subFile);
                                 messager.printMessage(Diagnostic.Kind.NOTE,
-                                        TAG + " Got one valuable config file : " + file);
+                                        TAG + " Got one valuable config file : " + subFile);
                                 continue;
                             }
                             messager.printMessage(Diagnostic.Kind.WARNING,

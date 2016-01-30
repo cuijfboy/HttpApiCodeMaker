@@ -5,36 +5,34 @@
 
 ******************************** CONFIGURATION ********************************
 
-"SampleApiD": {
+"SampleApiD": "SampleApiD": {
   "method": "GET",
   "fullUrl": "http://www.example.com/sampleApiD",
   "url": "sampleApiD",
   "baseUrl": "http://www.example.com/",
   "request": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpRequest",
     "extends": "SampleRequestModelA",
     "implements": [],
-    "filed": {
+    "body": {
       "commonRequestBodyArg1": "String",
       "commonRequestBodyArg2": "int"
     },
-    "transient": {
+    "header": {
       "commonRequestHeaderArg2": "int",
       "commonRequestHeaderArg1": "String"
     }
   },
   "response": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpResponse",
     "extends": "SampleResponseModelA",
     "implements": [],
-    "filed": {
+    "body": {
       "sampleApiCResponseBodyBinaryData": "byte[]"
     },
-    "transient": {
+    "header": {
       "commonResponseHeaderArg2": "int",
       "commonResponseHeaderArg1": "String"
     }
@@ -55,8 +53,8 @@
   "name": "SampleApiD",
   "extends": null,
   "implements": [],
-  "filed": {},
-  "transient": {}
+  "body": {},
+  "header": {}
 }
 
 ******************************************************************************/
@@ -107,7 +105,7 @@ public class SampleApiD extends HttpRequest {
         private void generateUrl() {
             if (url == null) {
                 url = "http://www.example.com/sampleApiD";
-                if (HttpMethod.GET == method) {
+                if (HttpMethod.GET == method || HttpMethod.DELETE == method) {
                     StringBuffer stringBuffer = new StringBuffer(url);
                     stringBuffer.append("?");
                     stringBuffer.append("commonRequestBodyArg1").append("=")

@@ -79,7 +79,7 @@ public class ${class.name} extends HttpRequest {
     <#assign type = api.urlParamMap[name]/>
                 url = url.replaceAll("\\{${name}(:${type})?\\}", String.valueOf(${name}));
 </#list>
-                if (HttpMethod.GET == method) {
+                if (HttpMethod.GET == method || HttpMethod.DELETE == method) {
                     StringBuffer stringBuffer = new StringBuffer(url);
                     stringBuffer.append("?");
 <#list requestBody?keys as name>

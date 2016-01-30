@@ -5,30 +5,28 @@
 
 ******************************** CONFIGURATION ********************************
 
-"FileDownloadRequest": {
+"FileDownloadRequest": "FileDownloadRequest": {
   "method": "GET",
   "fullUrl": "http://www.example.com/",
   "url": null,
   "baseUrl": null,
   "request": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpRequest",
     "extends": null,
     "implements": [],
-    "filed": {},
-    "transient": {}
+    "body": {},
+    "header": {}
   },
   "response": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpResponse",
     "extends": null,
     "implements": [],
-    "filed": {
+    "body": {
       "file": "File"
     },
-    "transient": {}
+    "header": {}
   },
   "hook": [],
   "client": "[DEFAULT_CLIENT]",
@@ -40,8 +38,8 @@
   "name": "FileDownloadRequest",
   "extends": null,
   "implements": [],
-  "filed": {},
-  "transient": {}
+  "body": {},
+  "header": {}
 }
 
 ******************************************************************************/
@@ -85,7 +83,7 @@ public class FileDownloadRequest extends HttpRequest {
         private void generateUrl() {
             if (url == null) {
                 url = "http://www.example.com/";
-                if (HttpMethod.GET == method) {
+                if (HttpMethod.GET == method || HttpMethod.DELETE == method) {
                     StringBuffer stringBuffer = new StringBuffer(url);
                     stringBuffer.append("?");
                     stringBuffer.deleteCharAt(stringBuffer.length() - 1);

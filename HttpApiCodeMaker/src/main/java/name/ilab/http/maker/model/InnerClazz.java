@@ -10,7 +10,7 @@ public class InnerClazz extends AbstractClazz {
     @SerializedName("static")
     public Boolean isStatic;
 
-    public Clazz hostClazz;
+    public transient Clazz hostClazz;
 
     public void merge(String name, InnerClazz that) {
         super.merge(name, that);

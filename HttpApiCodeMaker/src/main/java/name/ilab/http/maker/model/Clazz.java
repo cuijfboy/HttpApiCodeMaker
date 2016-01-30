@@ -45,7 +45,6 @@ public class Clazz extends AbstractClazz {
 
     @Override
     protected final void addImportItem(String name, String fullName) {
-        System.out.println("name = " + name + " fullName = " + fullName);
         if (name == null || fullName == null) {
             return;
         }

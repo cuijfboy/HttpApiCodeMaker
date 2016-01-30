@@ -20,7 +20,7 @@ public class Model extends Clazz {
     }
 
     private void generateConfiguration() {
-        configuration = HttpApiHelper.toPrettyJson(this);
+        configuration = HttpApiHelper.generateConfiguration(name, this);
     }
 
     public String getConfiguration() {

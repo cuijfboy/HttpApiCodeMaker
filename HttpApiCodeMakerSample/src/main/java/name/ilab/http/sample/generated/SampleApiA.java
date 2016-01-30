@@ -5,25 +5,24 @@
 
 ******************************** CONFIGURATION ********************************
 
-"SampleApiA": {
+"SampleApiA": "SampleApiA": {
   "method": "POST",
   "fullUrl": "http://www.example.com/sampleA",
   "url": "sampleA",
   "baseUrl": "http://www.example.com/",
   "request": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpRequest",
     "extends": "SampleRequestModelA",
     "implements": [],
-    "filed": {
+    "body": {
       "sampleApiARequestBodyArg1": "String",
       "sampleApiARequestBodyArg2": "int",
       "sampleApiARequestBodyArg3": "SampleModelB",
       "commonRequestBodyArg1": "String",
       "commonRequestBodyArg2": "int"
     },
-    "transient": {
+    "header": {
       "sampleApiARequestHeaderArg1": "String",
       "sampleApiARequestHeaderArg2": "int",
       "sampleApiARequestHeaderArg3": "SampleModelA",
@@ -33,18 +32,17 @@
   },
   "response": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpResponse",
     "extends": "SampleResponseModelA",
     "implements": [],
-    "filed": {
+    "body": {
       "sampleApiAResponseBodyArg1": "String",
       "sampleApiAResponseBodyArg2": "int",
       "sampleApiAResponseBodyArg3": "SampleModelB",
       "commonResponseBodyArg1": "String",
       "commonResponseBodyArg2": "int"
     },
-    "transient": {
+    "header": {
       "sampleApiAResponseHeaderArg1": "String",
       "sampleApiAResponseHeaderArg2": "int",
       "sampleApiAResponseHeaderArg3": "SampleModelA",
@@ -68,8 +66,8 @@
   "name": "SampleApiA",
   "extends": null,
   "implements": [],
-  "filed": {},
-  "transient": {}
+  "body": {},
+  "header": {}
 }
 
 ******************************************************************************/
@@ -126,7 +124,7 @@ public class SampleApiA extends HttpRequest {
         private void generateUrl() {
             if (url == null) {
                 url = "http://www.example.com/sampleA";
-                if (HttpMethod.GET == method) {
+                if (HttpMethod.GET == method || HttpMethod.DELETE == method) {
                     StringBuffer stringBuffer = new StringBuffer(url);
                     stringBuffer.append("?");
                     stringBuffer.append("sampleApiARequestBodyArg1").append("=")

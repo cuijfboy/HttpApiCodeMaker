@@ -1,6 +1,5 @@
 package name.ilab.http.maker.model;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import name.ilab.http.HttpApiHelper;
 import name.ilab.http.HttpMethod;
@@ -110,7 +109,7 @@ public class Api extends Clazz {
     }
 
     private void generateConfiguration() {
-        configuration = HttpApiHelper.toPrettyJson(this);
+        configuration = HttpApiHelper.generateConfiguration(name, this);
     }
 
     // ------------------------------------------------------------------------

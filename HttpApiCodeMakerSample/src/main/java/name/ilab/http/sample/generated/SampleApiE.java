@@ -5,24 +5,23 @@
 
 ******************************** CONFIGURATION ********************************
 
-"SampleApiE": {
+"SampleApiE": "SampleApiE": {
   "method": "GET",
   "fullUrl": "http://www.example.com/sampleApiE/{sampleApiEUrlArg1}/{sampleApiEUrlArg2:int}",
   "url": "sampleApiE/{sampleApiEUrlArg1}/{sampleApiEUrlArg2:int}",
   "baseUrl": "http://www.example.com/",
   "request": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpRequest",
     "extends": "SampleRequestModelA",
     "implements": [],
-    "filed": {
+    "body": {
       "sampleApiERequestBodyArg1": "String",
       "sampleApiERequestBodyArg2": "int",
       "commonRequestBodyArg1": "String",
       "commonRequestBodyArg2": "int"
     },
-    "transient": {
+    "header": {
       "sampleApiERequestHeaderArg1": "String",
       "sampleApiERequestHeaderArg2": "String",
       "commonRequestHeaderArg2": "int",
@@ -31,17 +30,16 @@
   },
   "response": {
     "static": null,
-    "hostClazz": null,
     "name": "HttpResponse",
     "extends": "SampleResponseModelA",
     "implements": [],
-    "filed": {
+    "body": {
       "sampleApiEResponseBodyArg1": "String",
       "sampleApiEResponseBodyArg2": "int",
       "commonResponseBodyArg1": "String",
       "commonResponseBodyArg2": "int"
     },
-    "transient": {
+    "header": {
       "sampleApiEResponseHeaderArg1": "String",
       "sampleApiEResponseHeaderArg2": "String",
       "commonResponseHeaderArg2": "int",
@@ -64,8 +62,8 @@
   "name": "SampleApiE",
   "extends": null,
   "implements": [],
-  "filed": {},
-  "transient": {}
+  "body": {},
+  "header": {}
 }
 
 ******************************************************************************/
@@ -124,7 +122,7 @@ public class SampleApiE extends HttpRequest {
                 url = "http://www.example.com/sampleApiE/{sampleApiEUrlArg1}/{sampleApiEUrlArg2:int}";
                 url = url.replaceAll("\\{sampleApiEUrlArg2(:int)?\\}", String.valueOf(sampleApiEUrlArg2));
                 url = url.replaceAll("\\{sampleApiEUrlArg1(:String)?\\}", String.valueOf(sampleApiEUrlArg1));
-                if (HttpMethod.GET == method) {
+                if (HttpMethod.GET == method || HttpMethod.DELETE == method) {
                     StringBuffer stringBuffer = new StringBuffer(url);
                     stringBuffer.append("?");
                     stringBuffer.append("sampleApiERequestBodyArg1").append("=")

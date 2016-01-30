@@ -5,7 +5,7 @@
 
 ******************************** CONFIGURATION ********************************
 
-"SampleRequestModelA": {
+"SampleRequestModelA": "SampleRequestModelA": {
   "source": "./src/main/java/",
   "package": "name.ilab.http.sample.generated",
   "import": [
@@ -17,13 +17,13 @@
   "name": "SampleRequestModelA",
   "extends": null,
   "implements": [],
-  "filed": {
+  "body": {
     "sampleRequestModelABodyArg1": "String",
     "sampleRequestModelABodyArg2": "int",
     "commonModelBodyArg2": "int",
     "commonModelBodyArg1": "String"
   },
-  "transient": {
+  "header": {
     "sampleRequestModelAHeaderArg1": "String",
     "sampleRequestModelAHeaderArg2": "int",
     "commonModelHeaderArg2": "int",
