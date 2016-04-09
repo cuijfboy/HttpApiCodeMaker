@@ -155,8 +155,9 @@ public class Maker {
     }
 
     private void makeCodeFile(Clazz clazz, Template template) {
+        String separatorInRegex = File.separator.equals("/") ? File.separator : "\\";
         File outputFolder = new File(clazz.getSourceFolder() + File.separator +
-                clazz.getPackageName().replaceAll("\\.", File.separator));
+                clazz.getPackageName().replaceAll("\\.", separatorInRegex));
         if (!outputFolder.exists()) {
             Maker.logInfo("create output folder : " + outputFolder.getAbsolutePath());
             outputFolder.mkdirs();
